@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 // i dodam po prostu komentarz
-int main()
+int main() 
 {
 //gggg
 //gggg

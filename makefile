@@ -1,1 +1,2 @@
-g++ first.cpp -o first
+prog: first.cpp
+	g++ first.cpp -o prog -Wall -pedantic
