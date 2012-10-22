@@ -1,0 +1,54 @@
+\documentclass[a4size,final]{article}
+\usepackage{fullpage}
+\usepackage{polski}
+\usepackage[cp1250]{inputenc}
+\usepackage[polish]{babel}
+%\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=ForestGreen,
+    urlcolor=blue
+}
+\begin{document}
+\normalsize
+\pagestyle{plain}
+\setcounter{secnumdepth}{1}
+\title{\Huge{Projekt ZPR}\\ \Large{Analiza widmowa sekwencji DNA}}
+\author{Krzysztof Grzyb & Tomasz Zieliñski}
+\maketitle
+\section{Opis projektu}
+Celem projektu jest napisanie programu analizuj¹cego sekwencje DNA i przedstawienie widma tych sekwencji w czytelnej formie.
+\subsection{Wymagania funkcjonalne}
+Program jest uruchamiany z linii poleceñ. Jako argument podawana jest nazwa pliku zawieraj¹cego sekwencje DNA. Dla ka¿dej z sekwencji DNA wykonywana jest transformata Fouriera.
+\subsubsection{Format danych wejœciowych}
+Pliki z danymi s¹ zapisywane w dwóch ró¿nych formatach z rozszerzeniem (jakim?). Parser sam rozpoznaje format pliku.
+\subsubsection{Format danych wyjœciowych}
+W przypadku nierozpoznanego formatu zwracany jest komunikat o b³êdzie, a program koñczy dzia³anie.\\
+Po wykonaniu tranformaty Fouriera wyœwietlana jest lista widm poszczególnych sekwencji. U¿ytkownik mo¿e wybraæ dowoln¹ z sekwencji i wyœwietliæ jej widmo. Podawane s¹ podstawowe dane, takie jak d³ugoœæ sekwencji (i inne?).
+\section{Rozwi¹zania programowe}
+\subsection{Struktura programu}
+\subsection{Styl kodowania}
+\href{http://wiki.vcmi.eu/index.php?title=Coding_guidelines}{Proponujê styl projektu VCMI}
+\subsection{Wykorzystane biblioteki}
+\begin{itemize}
+\item GSL (FFT)
+\item QT (wykres, ew. interfejs graficzny)
+\item Boost (FOREACH, lexical\_cast, inne (Spirit?))
+\end{itemize}
+\section{Utrzymanie i rozszerzalnoœæ projektu}
+\subsection{Przenoœnoœæ kodu}
+\subsection{Mo¿liwoœæ obs³ugi dodatkowych formatów wejœciowych}
+\subsection{Plan realizacji (harmonogram prac)}
+\begin{itemize}
+\item Obs³uga bibliotek
+\item Zapewnienie automatycznej kompilacji w srodowisku Linux i Windows
+\item Parsowanie plików wejœciowych
+\item FFT
+\item Interfejs graficzny
+\item Termin dodatkowy
+\end{itemize}
+\end{document}
