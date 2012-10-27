@@ -1,7 +1,7 @@
 \documentclass[a4size,final]{article}
 \usepackage{fullpage}
 \usepackage{polski}
-\usepackage[cp1250]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[polish]{babel}
 %\usepackage{graphicx}
 \usepackage[usenames,dvipsnames]{color}
@@ -18,35 +18,73 @@
 \pagestyle{plain}
 \setcounter{secnumdepth}{1}
 \title{\Huge{Projekt ZPR}\\ \Large{Analiza widmowa sekwencji DNA}}
-\author{Krzysztof Grzyb & Tomasz Zieli�ski}
+\author{Krzysztof Grzyb & Tomasz Zieliński}
 \maketitle
+
+
 \section{Opis projektu}
-Celem projektu jest napisanie programu analizuj�cego sekwencje DNA i przedstawienie widma tych sekwencji w czytelnej formie.
+\subsection*{Temat}
+Obliczanie i wizualizacja widma transformaty Fouriera dla nietypowych danych np. sekwencji DNA. Sekwencję DNA możemy traktować jak napis a ten z kolei po zamianie na liczby jako ciąg próbek na podstawie których można policzyć transformatę.
 \subsection{Wymagania funkcjonalne}
-Program jest uruchamiany z linii polece�. Jako argument podawana jest nazwa pliku zawieraj�cego sekwencje DNA. Dla ka�dej z sekwencji DNA wykonywana jest transformata Fouriera.
-\subsubsection{Format danych wej�ciowych}
-Pliki z danymi s� zapisywane w dw�ch r�nych formatach z rozszerzeniem (jakim?). Parser sam rozpoznaje format pliku.
-\subsubsection{Format danych wyj�ciowych}
-W przypadku nierozpoznanego formatu zwracany jest komunikat o b��dzie, a program ko�czy dzia�anie.\\
-Po wykonaniu tranformaty Fouriera wy�wietlana jest lista widm poszczeg�lnych sekwencji. U�ytkownik mo�e wybra� dowoln� z sekwencji i wy�wietli� jej widmo. Podawane s� podstawowe dane, takie jak d�ugo�� sekwencji (i inne?).
-\section{Rozwi�zania programowe}
+Program jest uruchamiany z linii poleceń. Jako argument podawana jest nazwa pliku zawierającego sekwencje DNA. Dla każdej z sekwencji DNA wykonywana jest transformata Fouriera.
+\subsubsection{Format danych wejściowych}
+Pliki z danymi są zapisywane w różnych formatach z rozszerzeniem .dat. Parser sam rozpoznaje format pliku.
+\begin{itemize}
+\item \textbf{Typ 1}\\
+	Plik musi być typu tekstowego. Pierwszy wiersz zawiera jedną liczbę dodatnią, mówiącą na której pozycji następuje rozróżnienie między egzonem? a intronem. Następne wiersze występują w parach. Pierwszy mówi czy sekwencja DNA jest poprawna (1 poprawna 0 niepoprawna), a drugi zawiera sekwencję DNA.\\
+Przykładowy plik z dwoma sekwencjami wygląda tak:\\ \\
+\emph{7\\1\\CTCCGAAGTAGGATT\\1\\TCAGAAGGTGAGGGC}
+\item \textbf{Typ 2}\\
+Plik musi być typu tekstowego. Może składać się z wielu sekwencji DNA. Składnia sekwencji jest taka sama. Najpierw występuje etykieta, a w następnej lini dane. Każda sekwencja musi posiadać 4 etykiety które będą sprawdzane: Len: - długość sekwencji DNA, Introns - zakresy gdzie w sekwencji DNA znajdują się introny, Exons - zakresy gdzie w sekwencji DNA znajdują się Introny, Data - sekwencja dna\\
+Przykładowy plik:\\
+\emph{(nie wiem jak zapisać ten znak sprawdz plik tex)>Seq 0 Len:\\250\\5UTR\\\\Intergenic\\\\Introns\\ 10 55 100 130 150 170\\Exons\\ 56 99 180 200\\3UTR\\\\Data\\AAGCTTATTATCTCTCCTTGACTCTCATCCGAGCTATCTTCTTCCACAT\\
+CTCTCTCGTTCCTCGGCGCGAACCTCTCGCTTCTTCTCCTCTTACTCCGATTGAACGATTCCGGATCT\\
+CGCTCTTTCTTCCCCGGTCGATCTCTCACCGTCGCCACCTCCTGATGCATCTGCTCACGACTGTTTTC\\
+TGAAACCCATGAACATAACAAAAACTCGTCAGAAAATAGAAACTAATCAAGGAAGAAGAAAAAGAAAA\\
+GGAGAAGGAAGCAATACCTGAGATTCTCTGCCTCCGTTTAGTAACTCCGTTTGATGCAGCCATGTTTG\\
+TCGTTGATCTTCGAGCTTCCCTGGGTTTATCCATTAATGCAAGCTAGAAAGACTAAGCTCCCATCAAC\\
+TGAGTAAAATCAGATTCCACTCCTTCAAAGTTTTGAAGCTT}
+\item \textbf{Typ 3}\\
+Plik typu tekstowego. W pliku zapisane liczby pooddzielane pojedynczymi spacjami reprezentujące próbki sygnału, dla którego należy wyliczyć transformate Fouriera.
+\end{itemize}
+
+\subsubsection{Format danych wyjściowych}
+W przypadku nierozpoznanego formatu zwracany jest komunikat o błędzie, a program kończy działanie.\\
+Po wykonaniu tranformaty Fouriera wyświetlana jest lista widm poszczególnych sekwencji. Użytkownik może wybrać dowolną z sekwencji i wyświetlić jej widmo. Podawane są podstawowe dane, takie jak długość sekwencji (i inne?).
+\section{Rozwiązania programowe}
 \subsection{Struktura programu}
+Program będzie składał się z trzech głównych modułów:
+\begin{itemize}
+\item Przetwarzanie plików wejściowych.\\
+Moduł będzie wczytywał dane z pliku, rozpoznawał jakiego typu dane zostały wczytane i przetwarzał je do formatu używanego w programie, na którym możliwe jest zastosowanie FFT.
+\item Obliczanie transformaty Fouriera.\\
+\item Wizualizacja wyników.\\
+Wyświetlanie wyników na ekranie w postaci wykresu i/lub zapis wyników do pliku.
+\end{itemize}
+
 \subsection{Styl kodowania}
-\href{http://wiki.vcmi.eu/index.php?title=Coding_guidelines}{Proponuj� styl projektu VCMI}
+\href{http://wiki.vcmi.eu/index.php?title=Coding_guidelines}{Proponuję styl projektu VCMI}
 \subsection{Wykorzystane biblioteki}
 \begin{itemize}
 \item GSL (FFT)
 \item QT (wykres, ew. interfejs graficzny)
 \item Boost (FOREACH, lexical\_cast, inne (Spirit?))
 \end{itemize}
-\section{Utrzymanie i rozszerzalno�� projektu}
-\subsection{Przeno�no�� kodu}
-\subsection{Mo�liwo�� obs�ugi dodatkowych format�w wej�ciowych}
+\section{Utrzymanie i rozszerzalność projektu}
+\subsection{Możliwość rozszerzania funkcjonalności}
+Kod programu będzie można łatwo rozszerzać o nową funkcjonalność:
+\begin{itemize}
+\item Obsługiwanie dodatkowych formatów wejściowych
+\item Inna wizualizacja wyników.
+\end{itemize}
+(możemy użyć wzorca dekoratora aby wyświetlać wyniki na wykresie i dodawać nowe opcje do wykresu np. linie poziome, pionowe, skalawanie wykresu ???)
+\subsection{Przenośność kodu}
+Kod będzie z założenia pisany multiplatformowo. Testowany na dwóch systemach Linux i Windows
 \subsection{Plan realizacji (harmonogram prac)}
 \begin{itemize}
-\item Obs�uga bibliotek
+\item Obsługa bibliotek
 \item Zapewnienie automatycznej kompilacji w srodowisku Linux i Windows
-\item Parsowanie plik�w wej�ciowych
+\item Parsowanie plików wejściowych
 \item FFT
 \item Interfejs graficzny
 \item Termin dodatkowy
