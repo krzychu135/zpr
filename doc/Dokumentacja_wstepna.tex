@@ -1,7 +1,8 @@
 \documentclass[a4size,final]{article}
 \usepackage{fullpage}
 \usepackage{polski}
-\usepackage[utf8]{inputenc}
+\usepackage[cp1250]{inputenc}
+%\usepackage[utf8]{inputenc}
 \usepackage[polish]{babel}
 %\usepackage{graphicx}
 \usepackage[usenames,dvipsnames]{color}
@@ -18,75 +19,81 @@
 \pagestyle{plain}
 \setcounter{secnumdepth}{1}
 \title{\Huge{Projekt ZPR}\\ \Large{Analiza widmowa sekwencji DNA}}
-\author{Krzysztof Grzyb & Tomasz ZieliÅ„ski}
+\author{Krzysztof Grzyb & Tomasz Zieliñski}
 \maketitle
 
 
 \section{Opis projektu}
 \subsection*{Temat}
-Obliczanie i wizualizacja widma transformaty Fouriera dla nietypowych danych np. sekwencji DNA. SekwencjÄ™ DNA moÅ¼emy traktowaÄ‡ jak napis a ten z kolei po zamianie na liczby jako ciÄ…g prÃ³bek na podstawie ktÃ³rych moÅ¼na policzyÄ‡ transformatÄ™.
+Obliczanie i wizualizacja widma transformaty Fouriera dla nietypowych danych np. sekwencji DNA. Sekwencjê DNA mo¿emy traktowaæ jak napis, a ten z kolei, po zamianie na liczby, jako ci¹g próbek na podstawie których mo¿na policzyæ transformatê.
 \subsection{Wymagania funkcjonalne}
-Program jest uruchamiany z linii poleceÅ„. Jako argument podawana jest nazwa pliku zawierajÄ…cego sekwencje DNA. Dla kaÅ¼dej z sekwencji DNA wykonywana jest transformata Fouriera.
-\subsubsection{Format danych wejÅ›ciowych}
-Pliki z danymi sÄ… zapisywane w rÃ³Å¼nych formatach z rozszerzeniem .dat. Parser sam rozpoznaje format pliku.
+Program jest uruchamiany z linii poleceñ. Jako argument podawana jest nazwa pliku zawieraj¹cego sekwencje DNA. Dla ka¿dej z sekwencji DNA wykonywana jest transformata Fouriera.
+\subsubsection{Format danych wejœciowych}
+Pliki z danymi s¹ zapisywane w ró¿nych formatach z rozszerzeniem .dat. Parser sam rozpoznaje format pliku.
 \begin{itemize}
 \item \textbf{Typ 1}\\
-	Plik musi byÄ‡ typu tekstowego. Pierwszy wiersz zawiera jednÄ… liczbÄ™ dodatniÄ…, mÃ³wiÄ…cÄ… na ktÃ³rej pozycji nastÄ™puje rozrÃ³Å¼nienie miÄ™dzy egzonem? a intronem. NastÄ™pne wiersze wystÄ™pujÄ… w parach. Pierwszy mÃ³wi czy sekwencja DNA jest poprawna (1 poprawna 0 niepoprawna), a drugi zawiera sekwencjÄ™ DNA.\\
-PrzykÅ‚adowy plik z dwoma sekwencjami wyglÄ…da tak:\\ \\
-\emph{7\\1\\CTCCGAAGTAGGATT\\1\\TCAGAAGGTGAGGGC}
+Plik typu tekstowego. Pierwszy wiersz zawiera jedn¹ liczbê dodatni¹ - okreœla ona pozycjê, na której nastêpuje rozdzia³ miêdzy egzonem a intronem. Nastêpne wiersze wystêpuj¹ w parach. Pierwszy mówi czy sekwencja DNA jest poprawna (1 poprawna, 0 niepoprawna), a drugi zawiera sekwencjê DNA.\\
+Przyk³adowy plik z dwiema sekwencjami:\\ \\
+\texttt{7\\1\\CTCCGAAGTAGGATT\\1\\TCAGAAGGTGAGGGC}
 \item \textbf{Typ 2}\\
-Plik musi byÄ‡ typu tekstowego. MoÅ¼e skÅ‚adaÄ‡ siÄ™ z wielu sekwencji DNA. SkÅ‚adnia sekwencji jest taka sama. Najpierw wystÄ™puje etykieta, a w nastÄ™pnej lini dane. KaÅ¼da sekwencja musi posiadaÄ‡ 4 etykiety ktÃ³re bÄ™dÄ… sprawdzane: Len: - dÅ‚ugoÅ›Ä‡ sekwencji DNA, Introns - zakresy gdzie w sekwencji DNA znajdujÄ… siÄ™ introny, Exons - zakresy gdzie w sekwencji DNA znajdujÄ… siÄ™ Introny, Data - sekwencja dna\\
-PrzykÅ‚adowy plik:\\
-\emph{(nie wiem jak zapisaÄ‡ ten znak sprawdz plik tex)>Seq 0 Len:\\250\\5UTR\\\\Intergenic\\\\Introns\\ 10 55 100 130 150 170\\Exons\\ 56 99 180 200\\3UTR\\\\Data\\AAGCTTATTATCTCTCCTTGACTCTCATCCGAGCTATCTTCTTCCACAT\\
+Plik typu tekstowego. Mo¿e sk³adaæ siê z wielu sekwencji DNA. Sk³adnia sekwencji jest nastêpuj¹ca:\\
+Najpierw wystêpuje etykieta, a w nastêpnej lini dane. Ka¿da sekwencja musi posiadaæ 4 etykiety ,tóre bêd¹ sprawdzane:
+\begin{itemize}
+\item{Len} - d³ugoœæ sekwencji DNA
+\item{Introns} - w tych zakresach sekwencji DNA znajduj¹ siê introny
+\item{Exons} - w tych zakresachsekwencji DNA znajduj¹ siê Introny
+\item{Data} - sekwencja DNA
+\end{itemize}
+Przyk³adowy plik:\\
+\texttt{\(>\)Seq 0 Len:\\250\\5UTR\\\\Intergenic\\\\Introns\\ 10 55 100 130 150 170\\Exons\\ 56 99 180 200\\3UTR\\\\Data\\AAGCTTATTATCTCTCCTTGACTCTCATCCGAGCTATCTTCTTCCACAT\\
 CTCTCTCGTTCCTCGGCGCGAACCTCTCGCTTCTTCTCCTCTTACTCCGATTGAACGATTCCGGATCT\\
-CGCTCTTTCTTCCCCGGTCGATCTCTCACCGTCGCCACCTCCTGATGCATCTGCTCACGACTGTTTTC\\
-TGAAACCCATGAACATAACAAAAACTCGTCAGAAAATAGAAACTAATCAAGGAAGAAGAAAAAGAAAA\\
-GGAGAAGGAAGCAATACCTGAGATTCTCTGCCTCCGTTTAGTAACTCCGTTTGATGCAGCCATGTTTG\\
-TCGTTGATCTTCGAGCTTCCCTGGGTTTATCCATTAATGCAAGCTAGAAAGACTAAGCTCCCATCAAC\\
-TGAGTAAAATCAGATTCCACTCCTTCAAAGTTTTGAAGCTT}
-\item \textbf{Typ 3}\\
-Plik typu tekstowego. W pliku zapisane liczby pooddzielane pojedynczymi spacjami reprezentujÄ…ce prÃ³bki sygnaÅ‚u, dla ktÃ³rego naleÅ¼y wyliczyÄ‡ transformate Fouriera.
+}
+\item \textbf{Inne formaty}\\
+Dodatkowo struktura programu umo¿liwia dodanie nowych obs³ugiwanych formatów bez ingerencji w achitekturê.
 \end{itemize}
 
-\subsubsection{Format danych wyjÅ›ciowych}
-W przypadku nierozpoznanego formatu zwracany jest komunikat o bÅ‚Ä™dzie, a program koÅ„czy dziaÅ‚anie.\\
-Po wykonaniu tranformaty Fouriera wyÅ›wietlana jest lista widm poszczegÃ³lnych sekwencji. UÅ¼ytkownik moÅ¼e wybraÄ‡ dowolnÄ… z sekwencji i wyÅ›wietliÄ‡ jej widmo. Podawane sÄ… podstawowe dane, takie jak dÅ‚ugoÅ›Ä‡ sekwencji (i inne?).
-\section{RozwiÄ…zania programowe}
+\subsubsection{Format danych wyjœciowych}
+W przypadku nierozpoznanego formatu zwracany jest komunikat o b³êdzie, a program koñczy dzia³anie.\\
+Po wykonaniu tranformaty Fouriera wyœwietlana jest lista widm poszczególnych sekwencji. U¿ytkownik mo¿e wybraæ dowoln¹ z sekwencji i wyœwietliæ jej widmo. Podawane s¹ podstawowe dane, takie jak liczba i d³ugoœæ sekwencji.
+\section{Rozwi¹zania programowe}
 \subsection{Struktura programu}
-Program bÄ™dzie skÅ‚adaÅ‚ siÄ™ z trzech gÅ‚Ã³wnych moduÅ‚Ã³w:
+Program bêdzie sk³ada³ siê z trzech g³ównych modu³ów:
 \begin{itemize}
-\item Przetwarzanie plikÃ³w wejÅ›ciowych.\\
-ModuÅ‚ bÄ™dzie wczytywaÅ‚ dane z pliku, rozpoznawaÅ‚ jakiego typu dane zostaÅ‚y wczytane i przetwarzaÅ‚ je do formatu uÅ¼ywanego w programie, na ktÃ³rym moÅ¼liwe jest zastosowanie FFT.
-\item Obliczanie transformaty Fouriera.\\
-\item Wizualizacja wynikÃ³w.\\
-WyÅ›wietlanie wynikÃ³w na ekranie w postaci wykresu i/lub zapis wynikÃ³w do pliku.
+\item Przetwarzanie plików wejœciowych.
+Modu³ bêdzie wczytywa³ dane z pliku, nastêpnie rozpoznawa³, jakiego typu dane zosta³y wczytane i przetwarza³ je do formatu u¿ywanego w programie, na którym mo¿liwe jest zastosowanie FFT.
+\item Obliczanie transformaty Fouriera.
+\item Wizualizacja wyników.
+Dostêpna jest lista próbek widma. Po wybraniu próbki, widmo jest rysowane na wykresie.
 \end{itemize}
 
 \subsection{Styl kodowania}
-\href{http://wiki.vcmi.eu/index.php?title=Coding_guidelines}{ProponujÄ™ styl projektu VCMI}
+\href{http://wiki.vcmi.eu/index.php?title=Coding_guidelines}{Zgodny z tymi wytycznymi}
 \subsection{Wykorzystane biblioteki}
 \begin{itemize}
 \item GSL (FFT)
+\item Obs³ugiwanie dodatkowych formatów wejœciowych
+\item Inny sposób wizualizacji wyników
+\end{itemize}
+\subsection{Przenoœnoœæ kodu}
+Kod bêdzie z za³o¿enia pisany w sposób niezale¿ny od platformy. Testy zostan¹ przeprowadzone na dwóch systemach: Linux i Windows
 \item QT (wykres, ew. interfejs graficzny)
-\item Boost (FOREACH, lexical\_cast, inne (Spirit?))
+\item Boost (FOREACH, lexical\_cast, ew. inne)
 \end{itemize}
-\section{Utrzymanie i rozszerzalnoÅ›Ä‡ projektu}
-\subsection{MoÅ¼liwoÅ›Ä‡ rozszerzania funkcjonalnoÅ›ci}
-Kod programu bÄ™dzie moÅ¼na Å‚atwo rozszerzaÄ‡ o nowÄ… funkcjonalnoÅ›Ä‡:
+\section{Utrzymanie i rozszerzalnoœæ projektu}
+\subsection{Mo¿liwoœæ rozszerzania funkcjonalnoœci}
+Kod programu bêdzie mo¿na ³atwo rozszerzaæ o nowe funkcjonalnoœci:
 \begin{itemize}
-\item ObsÅ‚ugiwanie dodatkowych formatÃ³w wejÅ›ciowych
-\item Inna wizualizacja wynikÃ³w.
+\item Nowe formaty plików wejœciowych
+\item Nowe funkcje okna wyników
 \end{itemize}
-(moÅ¼emy uÅ¼yÄ‡ wzorca dekoratora aby wyÅ›wietlaÄ‡ wyniki na wykresie i dodawaÄ‡ nowe opcje do wykresu np. linie poziome, pionowe, skalawanie wykresu ???)
-\subsection{PrzenoÅ›noÅ›Ä‡ kodu}
-Kod bÄ™dzie z zaÅ‚oÅ¼enia pisany multiplatformowo. Testowany na dwÃ³ch systemach Linux i Windows
-\subsection{Plan realizacji (harmonogram prac)}
+\subsection{Plan realizacji}
 \begin{itemize}
-\item ObsÅ‚uga bibliotek
-\item Zapewnienie automatycznej kompilacji w srodowisku Linux i Windows
-\item Parsowanie plikÃ³w wejÅ›ciowych
-\item FFT
-\item Interfejs graficzny
-\item Termin dodatkowy
+\item Obs³uga bibliotek - 6 listopada
+\item Zapewnienie automatycznej kompilacji w srodowisku Linux i Windows - 13 listopada
+\item Parsowanie plików wejœciowych - 27 listopada
+\item FFT - 11 grudnia
+\item Interfejs graficzny - 23 grudnia
+\item Testy - 15 stycznia
+\item Termin dodatkowy - 22 stycznia
 \end{itemize}
 \end{document}
