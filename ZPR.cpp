@@ -5,6 +5,9 @@
 //include qt?
 #include "stdafx.h"
 
+#include "Graph.h"
+#include "Analyzer.h"
+
 //GSL
 #include <gsl_math.h>
 #include <gsl\gsl_fft.h>
