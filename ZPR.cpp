@@ -7,6 +7,7 @@
 
 #include "Graph.h"
 #include "Analyzer.h"
+#include "ParserFactory.h"
 
 //GSL
 #include <gsl_math.h>
@@ -18,13 +19,13 @@ using namespace System;
 
 int main (array<System::String ^> ^args)
 {
-	std::vector<int> vec;
-	BOOST_FOREACH (auto element, vec)
+	try
 	{
-		element = 666;
+		ParserFactory::get().initParsers();
+		int bar;
+		ParserFactory::get().tryToParse(bar);
 	}
-	QWidget widget;
-
-    Console::WriteLine (L"Hello World");
+	catch (std::exception &e)
+	{}
     return 0;
 }

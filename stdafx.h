@@ -9,3 +9,6 @@
 #include <vector>
 // TODO: reference additional headers your program requires here
 #include "boost\foreach.hpp"
+#include "boost\assign.hpp"
+
+typedef int Tfile;
