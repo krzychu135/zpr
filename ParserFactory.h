@@ -17,4 +17,5 @@ private:
 	std::vector<Parser*> parsers;
 
 	ParserFactory();
+	~ParserFactory();
 };

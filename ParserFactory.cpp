@@ -20,3 +20,8 @@ void ParserFactory::registerParser (const Parser & parser)
 {}
 void ParserFactory::tryToParse (Tfile & file)
 {}
+ParserFactory::~ParserFactory()
+{
+	BOOST_FOREACH (auto p, parsers)
+		delete p;
+}
