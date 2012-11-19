@@ -24,18 +24,24 @@ using boost::phoenix::ref;
 typedef std::pair<unsigned int, unsigned int> range;
 
 template <typename Iterator>
-struct parseRange : qi::grammar <Iterator, range(), space_type>
+struct parseRange : qi::grammar <Iterator, std::vector<range>()>
 {
-	parseRange() : parseRanger::base_type (pair)
+	parseRange() : parseRange::base_type (pairSequence)
 	{
 		pair %=
 			uint_ >>
 			space_type >>
 			uint_ //two numbers separated by space
 		;
+
+		pairSequence %=
+			pair >>
+			space_type
+		;
 	}
 
-	qi::rule<Iterator, range(), space_type> pair; //pairs are delimited by another space
+	qi::rule<Iterator, range()> pair;
+	qi::rule<Iterator, std::vector<range>(), space_type> pairSequence; //pairs are delimited by another space
 };
 
 void ParserSplice::getSequences(std::vector<Sequence> & out) const
