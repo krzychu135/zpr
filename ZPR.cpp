@@ -5,6 +5,7 @@
 #include "Graph.h"
 #include "Analyzer.h"
 #include "ParserFactory.h"
+#include <sstream>
 
 using namespace System;
 
@@ -16,8 +17,15 @@ int main (int argc, char** argv)
 
 		for (int i = 0; i < argc; ++i)
 		{
-			io::stream_buffer<io::file_source> s (argv[i]);
-			ParserFactory::get().tryToParse(s);
+			std::stringstream s (argv[i]);
+
+			std::string text;
+			char buffer[4096];
+			while (s.read (buffer, sizeof(buffer)))
+				text.append (buffer, sizeof(buffer));
+			text.append(buffer, s.gcount());
+
+			ParserFactory::get().tryToParse(text);
 		}
 
 	}

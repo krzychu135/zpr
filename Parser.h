@@ -9,16 +9,15 @@ class Sequence;
 class Parser : public boost::noncopyable
 {
 public:
-	virtual void loadFile (std::string & name) = 0;
 	virtual void getSequences (std::vector<Sequence> & out) const = 0;
-	virtual bool tryToParse (Tfile & file) {return false;};
+	virtual bool tryToParse (std::string & text) {return false;};
 };
 
 class ParserSplice : public Parser //TODO: bardziej sensowna nazwa?
 {
 public:
 	ParserSplice(){};
-	void loadFile (std::string & name){};
+	virtual bool tryToParse (std::string & text) {return false;};
 	void getSequences (std::vector<Sequence> & out) const;
 };
 
@@ -26,6 +25,6 @@ class ParserFullEx : public Parser //TODO: bardziej sensowna nazwa?
 {
 public:
 	ParserFullEx(){};
-	void loadFile (std::string & name){};
+	virtual bool tryToParse (std::string & text);
 	void getSequences (std::vector<Sequence> & out) const;
 };

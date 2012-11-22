@@ -18,7 +18,7 @@ void ParserFactory::initParsers()
 }
 void ParserFactory::registerParser (const Parser & parser)
 {}
-void ParserFactory::tryToParse (Tfile & file)
+void ParserFactory::tryToParse (std::string & text)
 {}
 ParserFactory::~ParserFactory()
 {

@@ -12,7 +12,7 @@ public:
 
 	void initParsers();
 	void registerParser (const Parser & parser);
-	void tryToParse (Tfile & file); //TODO: file
+	void tryToParse (std::string & text); //TODO: file
 private:
 	std::vector<Parser*> parsers;
 
