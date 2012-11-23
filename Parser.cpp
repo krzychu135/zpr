@@ -108,7 +108,9 @@ bool ParserFullEx::tryToParse (std::string & text)
     typedef parseFullExData<iterator_type> P;
     P parser;
 
-	return qi::phrase_parse (iter, end, parser, space, v);
+	bool success = qi::phrase_parse (iter, end, parser, space, v);
+	int size = v.size();
+	return success;
 }
 void ParserFullEx::getSequences(std::vector<Sequence> & out) const
 {

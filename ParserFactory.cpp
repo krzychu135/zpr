@@ -18,8 +18,16 @@ void ParserFactory::initParsers()
 }
 void ParserFactory::registerParser (const Parser & parser)
 {}
-void ParserFactory::tryToParse (std::string & text)
-{}
+bool ParserFactory::tryToParse (std::string & text)
+{
+	BOOST_FOREACH (auto p, parsers)
+	{
+		if (p->tryToParse (text))
+			return true;
+	}
+	return false;
+
+}
 ParserFactory::~ParserFactory()
 {
 	BOOST_FOREACH (auto p, parsers)
