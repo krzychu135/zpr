@@ -1,2 +1,2 @@
-prog: first.cpp
-	g++ first.cpp -o prog -Wall -pedantic
+prog: ZPR.cpp
+	g++ ZPR.cpp -o prog -Wall -pedantic

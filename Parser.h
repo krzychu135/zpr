@@ -3,7 +3,6 @@
 #include "Sequence.h"
 
 class Sequence;
-
 class Parser
 {
 public:

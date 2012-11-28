@@ -7,5 +7,7 @@
 
 #include <stdio.h>
 #include <vector>
+#include <string>
+#include <iostream>
 // TODO: reference additional headers your program requires here
-#include "boost\foreach.hpp"
+//#include "boost\foreach.hpp"
