@@ -11,12 +11,12 @@
 #include <iostream>
 // TODO: reference additional headers your program requires here
 
-#include "boost\foreach.hpp"
-#include "boost\assign.hpp"
+#include "boost/foreach.hpp"
+#include "boost/assign.hpp"
 
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/stream_buffer.hpp>
 #include <boost/iostreams/device/file.hpp>
 namespace io = boost::iostreams;
-typedef io::stream_buffer<io::file_source> Tfile;
+//typedef io::stream_buffer<io::file_source> Tfile;
 

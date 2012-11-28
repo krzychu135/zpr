@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "boost\noncopyable.hpp"
+#include "boost/noncopyable.hpp"
 
 #include "Sequence.h"
 
