@@ -1,8 +1,5 @@
 // ZPR.cpp : main project file.
 
-//include boost::foreach
-//include gsl fft
-//include qt?
 #include "stdafx.h"
 
 #include "Graph.h"
@@ -16,69 +13,36 @@
 #include <Qt/qapplication.h>
 
 #include <boost/foreach.hpp>
-//#include <boost/thread.hpp>
-//using namespace System;
-constexpr int g(){
-	return 5;
-}
-void gh(){
-	while(true){
-		std::cout<< "Hello" << std::endl;
-	}
-}
-class typ
-{
-public:
-	std::string ala;
-	int a;
-};
-/*int main ()
-{
-	std::vector<int> vec;
-	BOOST_FOREACH (auto element, vec)
-	{
-		element = 666;
-	}
-	QApplication g();
-	QWidget widget;
-	//boost::thread t(&g);
-	//t.join();
-	//boost::thread th(&gh);
-		//th.join();
-    //Console::WriteLine (L"Hello World");
-	std::cout<< "Hello World"<<std::endl;
-    return 0;
-}*/
-#include "MainWindow.h"
-#include <boost/thread.hpp>
-#include <iostream>
-#include <utility>
-#include <thread>
-#include <chrono>
-#include <functional>
-#include <atomic>
+
 
 
 int main(int argc, char *argv[])
 {
+        try
+        {
+		ParserFactory::get().initParsers();
 
-	boost::thread watek();
-	watek.join();
+		for (int i = 1; i < argc; ++i)
+		{
+			std::fstream s;
+			s.open (argv[i]);
 
-	int mojatablica[] = {1,3,4,5,6};
-	auto y = mojatablica;
-	for(int &x :mojatablica){
-		x = 0;
-		auto alai = u8"To jest uó ląala w UTF8";
-		std::cout<<alai<<" "<<*(y++)<<std::endl;
+			std::string text;
+			char buffer[4096];
+			while (s.read (buffer, sizeof(buffer)))
+				text.append (buffer, sizeof(buffer));
+			text.append(buffer, s.gcount());
+
+			if (ParserFactory::get().tryToParse (text))
+				std::cout << "File " << argv[i] << " parsed\n";
+			else
+				std::cout << "File " << argv[i] << " not parsed\n";
+
+			s.close();
+		}
+
 	}
-	typ i{"tentyp",2};
-	std::vector<int> vec;
-//	BOOST_FOREACH (auto element, vec)
-//	{
-//		//element = 1;
-//	}
-	MainWindow prog(argc,argv);
-
+	catch (std::exception &e)
+	{}
     return 0;
 }
