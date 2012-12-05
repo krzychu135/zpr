@@ -37,6 +37,15 @@ int main (int argc, char** argv)
 			s.close();
 		}
 
+		//BOOST_FOREACH (auto vec, ParserFactory::get().allSequences)
+		BOOST_FOREACH (boost::shared_ptr<std::vector <Sequence>> vec, ParserFactory::get().allSequences)
+		{
+			BOOST_FOREACH (auto seq, *vec) //reference
+			{
+				Analyzer::get().createSpectrum (seq);
+			}
+		}
+
 	}
 	catch (std::exception &e)
 	{}

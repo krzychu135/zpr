@@ -12,6 +12,8 @@ class Sequence
 	TSamples samples;
 	Spectrum * spectrum; 
 public:
+	Spectrum * getSpectrum() const;
+	void setSpectrum (const Spectrum * s);
 	TSamples numericalSamples() const;
 	void setSamples (TSamples & s);
 };
