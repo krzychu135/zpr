@@ -4,6 +4,7 @@
  *  Created on: 25-11-2012
  *      Author: krzysiek
  */
+#include "stdafx.h"
 
 #ifndef TEXTFILEVIEWER_H_
 #define TEXTFILEVIEWER_H_

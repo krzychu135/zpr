@@ -4,6 +4,7 @@
  *  Created on: 25-11-2012
  *      Author: krzysiek
  */
+#include "stdafx.h"
 
 #include "TextFileViewer.h"
 

@@ -2,6 +2,7 @@
 // or project specific include files that are used frequently, but
 // are changed infrequently
 //
+#define BOOST_SPIRIT_DEBUG
 
 #pragma once
 
@@ -13,6 +14,7 @@
 
 #include "boost/foreach.hpp"
 #include "boost/assign.hpp"
+#include "boost/shared_ptr.hpp"
 
 #include <boost/iostreams/stream.hpp>
 #include <boost/iostreams/stream_buffer.hpp>

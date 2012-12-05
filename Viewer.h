@@ -4,6 +4,7 @@
  *  Created on: 21-11-2012
  *      Author: Krzysztof Grzyb
  */
+#include "stdafx.h"
 
 #ifndef VIEWER_H_
 #define VIEWER_H_
