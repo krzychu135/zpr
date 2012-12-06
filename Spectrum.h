@@ -5,6 +5,9 @@
 
 class Spectrum
 {
+	friend class Analyzer;
+	friend class Sequence;
+
 	std::vector<double> samples;
 public:
 	Spectrum();
