@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <cstdlib> //malloc
 // TODO: reference additional headers your program requires here
 
 #include "boost/foreach.hpp"
