@@ -4,7 +4,8 @@
 
 class Spectrum;
 
-typedef std::vector<double> TSamples;
+typedef double TSample;
+typedef std::vector<TSample> TSamples;
 
 class Sequence
 {

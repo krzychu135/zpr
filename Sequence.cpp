@@ -4,7 +4,7 @@
 
 TSamples Sequence::numericalSamples() const
 {
-	return TSamples();
+	return samples;
 }
 
 void Sequence::setSamples(TSamples & s)

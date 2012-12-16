@@ -119,7 +119,7 @@ void ParserSplice::getSequences(std::vector<Sequence> & out) const
 
 bool ParserFullEx::tryToParse (std::string & text)
 {
-	//return true; //test
+	return true; //test
 
 	std::vector<FullExData> v;
 
