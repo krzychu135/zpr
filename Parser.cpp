@@ -119,18 +119,46 @@ void ParserSplice::getSequences(std::vector<Sequence> & out) const
 
 bool ParserFullEx::tryToParse (std::string & text)
 {
-	return true; //test
+	//return true; //test
+	return false;
 
-	std::vector<FullExData> v;
+	//string parser
 
-	typedef std::string::const_iterator iterator_type;
-	iterator_type iter = text.begin();
-	iterator_type end = text.end();
-	typedef parseFullExData<iterator_type> P;
-	P parser;
+	//try
+	//{
+	//	std::string buffer;
+	//	size_t pos = 0;
+	//	while (text.size())
+	//	{
+	//		pos = text.find ("Introns", pos);
+	//		pos = text.find (" ", pos);
+	//		unsigned val;
+	//		while (text[pos] < 'A')
+	//		{
+	//			text >> val;
+	//		}
+	//	}
+	//}
+	//catch (std::exception &e)
+	//{
+	//	return false;
+	//}
+	//return true;
 
-	bool success = qi::parse (iter, end, parser, v);
-	return success;
+
+
+	//spirit parser
+
+	//std::vector<FullExData> v;
+
+	//typedef std::string::const_iterator iterator_type;
+	//iterator_type iter = text.begin();
+	//iterator_type end = text.end();
+	//typedef parseFullExData<iterator_type> P;
+	//P parser;
+
+	//bool success = qi::parse (iter, end, parser, v);
+	//return success;
 }
 void ParserFullEx::getSequences(std::vector<Sequence> & out) const
 {
@@ -149,4 +177,83 @@ void ParserFullEx::getSequences(std::vector<Sequence> & out) const
 		seq.setSamples(samples);
 		out.push_back (seq);
 	}
+}
+
+struct SpliceData
+{
+	size_t position; //0 - pomijamy
+	std::string sequence;
+};
+
+BOOST_FUSION_ADAPT_STRUCT(
+	SpliceData,
+	(size_t, position)
+	(std::string, sequence)
+)
+
+template <typename Iterator>
+struct parseSpliceData : qi::grammar <Iterator, std::vector<SpliceData>()>
+{
+	parseSpliceData() : parseSpliceData::base_type (output)
+	{
+		//std::cout << "Hello parser!\n";
+
+		output %= spliceData;
+
+		spliceData =
+			uint_ >>
+			omit [eol] >>
+			actg >>
+			omit [eol]
+		;
+
+		actg = *(char_("actgACTG"));
+
+		BOOST_SPIRIT_DEBUG_NODE (spliceData);
+		BOOST_SPIRIT_DEBUG_NODE (actg);
+	}
+
+	qi::rule<Iterator, std::string()> actg;
+	qi::rule<Iterator, SpliceData()> spliceData;
+	qi::rule<Iterator, std::vector<SpliceData>()> output; 
+};
+
+bool ParserSplice::tryToParse (std::string & text)
+{
+	//return true; //test
+	//return false;
+
+	//string parser
+	//try
+	//{
+	//	std::string buffer;
+	//	size_t pos = 0;
+	//	while (text.size())
+	//	{
+	//		pos = text.find ("Introns", pos);
+	//		pos = text.find (" ", pos);
+	//		unsigned val;
+	//		while (text[pos] < 'A')
+	//		{
+	//			text >> val;
+	//		}
+	//	}
+	//}
+	//catch (std::exception &e)
+	//{
+	//	return false;
+	//}
+	//return true;
+
+	//spirit parser
+	std::vector<SpliceData> v;
+
+	typedef std::string::const_iterator iterator_type;
+	iterator_type iter = text.begin();
+	iterator_type end = text.end();
+	typedef parseSpliceData<iterator_type> P;
+	P parser;
+
+	bool success = qi::parse (iter, end, parser, v);
+	return success;
 }

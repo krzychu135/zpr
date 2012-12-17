@@ -18,7 +18,7 @@ class ParserSplice : public Parser //TODO: bardziej sensowna nazwa?
 {
 public:
 	ParserSplice(){};
-	virtual bool tryToParse (std::string & text) {return false;};
+	virtual bool tryToParse (std::string & text);
 	void getSequences (std::vector<Sequence> & out) const;
 };
 
