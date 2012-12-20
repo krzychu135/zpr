@@ -250,10 +250,14 @@ bool ParserSplice::tryToParse (std::string & text)
 
 	typedef std::string::const_iterator iterator_type;
 	iterator_type iter = text.begin();
-	iterator_type end = text.end();
+	size_t newLine = text.find('\n');
+	iterator_type end = text.begin() + newLine; //first char after the number
 	typedef parseSpliceData<iterator_type> P;
 	P parser;
 
-	bool success = qi::parse (iter, end, parser, v);
+	int position;
+	bool r = qi::parse(iter, end, uint_, position);
+
+	bool success = qi::parse (text.begin() + newLine + 1, text.end(), parser, v);
 	return success;
 }
