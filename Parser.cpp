@@ -196,8 +196,6 @@ struct parseSpliceData : qi::grammar <Iterator, std::vector<SpliceData>()>
 {
 	parseSpliceData() : parseSpliceData::base_type (output)
 	{
-		//std::cout << "Hello parser!\n";
-
 		output %= spliceData;
 
 		spliceData =
@@ -216,6 +214,17 @@ struct parseSpliceData : qi::grammar <Iterator, std::vector<SpliceData>()>
 	qi::rule<Iterator, std::string()> actg;
 	qi::rule<Iterator, SpliceData()> spliceData;
 	qi::rule<Iterator, std::vector<SpliceData>()> output; 
+};
+
+template <typename Iterator>
+struct parseUnsigned : qi::grammar <Iterator, unsigned()>
+{
+	parseUnsigned() : parseUnsigned::base_type (output)
+	{
+		output %= uint_;
+	}
+
+	qi::rule<Iterator, unsigned()> output;
 };
 
 bool ParserSplice::tryToParse (std::string & text)
@@ -252,12 +261,14 @@ bool ParserSplice::tryToParse (std::string & text)
 	iterator_type iter = text.begin();
 	size_t newLine = text.find('\n');
 	iterator_type end = text.begin() + newLine; //first char after the number
-	typedef parseSpliceData<iterator_type> P;
-	P parser;
+	typedef parseSpliceData<iterator_type> P1;
+	P1 spliceParser;
+	typedef parseUnsigned<iterator_type> P2;
+	P2 unsignedParser;
 
 	int position;
-	bool r = qi::parse(iter, end, uint_, position);
+	bool r = qi::parse(iter, end, unsignedParser, position);
 
-	bool success = qi::parse (text.begin() + newLine + 1, text.end(), parser, v);
+	bool success = qi::parse (text.begin() + newLine + 1, text.end(), spliceParser, v);
 	return success;
 }
