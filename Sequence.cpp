@@ -2,6 +2,11 @@
 
 #include "Sequence.h"
 
+Sequence::Sequence()
+{
+	spectrum = NULL;
+}
+
 TSamples Sequence::numericalSamples() const
 {
 	return samples;

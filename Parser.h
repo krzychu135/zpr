@@ -5,7 +5,7 @@
 #include "Sequence.h"
 
 class Sequence;
-
+struct SpliceChunk;
 
 class Parser : public boost::noncopyable
 {
@@ -16,6 +16,7 @@ public:
 
 class ParserSplice : public Parser //TODO: bardziej sensowna nazwa?
 {
+	std::vector<boost::shared_ptr<SpliceChunk> > dataChunks;
 public:
 	ParserSplice(){};
 	virtual bool tryToParse (std::string & text);

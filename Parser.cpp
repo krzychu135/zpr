@@ -28,8 +28,6 @@ using boost::phoenix::ref;
 typedef std::pair<unsigned int, unsigned int> range;
 typedef std::vector<range> vrange_t;
 
-#define BOOST_SPIRIT_DEBUG_PRINT_SOME 80
-
 struct FullExData
 {
 	vrange_t introns;
@@ -113,10 +111,6 @@ struct parseFullExData : qi::grammar <Iterator, std::vector<FullExData>()>
 	qi::rule<Iterator, std::vector<FullExData>()> output; 
 };
 
-void ParserSplice::getSequences(std::vector<Sequence> & out) const
-{
-}
-
 bool ParserFullEx::tryToParse (std::string & text)
 {
 	//return true; //test
@@ -181,22 +175,28 @@ void ParserFullEx::getSequences(std::vector<Sequence> & out) const
 
 struct SpliceData
 {
-	size_t position; //0 - pomijamy
+	unsigned active; //0 - pomijamy
 	std::string sequence;
 };
 
 BOOST_FUSION_ADAPT_STRUCT(
 	SpliceData,
-	(size_t, position)
+	(unsigned, active)
 	(std::string, sequence)
 )
+
+struct SpliceChunk
+{
+	size_t position;
+	std::vector<SpliceData> data;
+};
 
 template <typename Iterator>
 struct parseSpliceData : qi::grammar <Iterator, std::vector<SpliceData>()>
 {
 	parseSpliceData() : parseSpliceData::base_type (output)
 	{
-		output %= spliceData;
+		output %= +spliceData;
 
 		spliceData =
 			uint_ >>
@@ -207,8 +207,8 @@ struct parseSpliceData : qi::grammar <Iterator, std::vector<SpliceData>()>
 
 		actg = *(char_("actgACTG"));
 
-		BOOST_SPIRIT_DEBUG_NODE (spliceData);
-		BOOST_SPIRIT_DEBUG_NODE (actg);
+		//BOOST_SPIRIT_DEBUG_NODE (spliceData);
+		//BOOST_SPIRIT_DEBUG_NODE (actg);
 	}
 
 	qi::rule<Iterator, std::string()> actg;
@@ -232,30 +232,7 @@ bool ParserSplice::tryToParse (std::string & text)
 	//return true; //test
 	//return false;
 
-	//string parser
-	//try
-	//{
-	//	std::string buffer;
-	//	size_t pos = 0;
-	//	while (text.size())
-	//	{
-	//		pos = text.find ("Introns", pos);
-	//		pos = text.find (" ", pos);
-	//		unsigned val;
-	//		while (text[pos] < 'A')
-	//		{
-	//			text >> val;
-	//		}
-	//	}
-	//}
-	//catch (std::exception &e)
-	//{
-	//	return false;
-	//}
-	//return true;
-
-	//spirit parser
-	std::vector<SpliceData> v;
+	auto chunk = new SpliceChunk;
 
 	typedef std::string::const_iterator iterator_type;
 	iterator_type iter = text.begin();
@@ -266,9 +243,41 @@ bool ParserSplice::tryToParse (std::string & text)
 	typedef parseUnsigned<iterator_type> P2;
 	P2 unsignedParser;
 
-	int position;
-	bool r = qi::parse(iter, end, unsignedParser, position);
+	bool r = qi::parse(iter, end, unsignedParser, chunk->position);
 
-	bool success = qi::parse (text.begin() + newLine + 1, text.end(), spliceParser, v);
+	//BOOST_SPIRIT_DEBUG_NODE (spliceParser);
+	bool success = qi::parse (text.begin() + newLine + 1, text.end(), spliceParser, chunk->data);
+	if (success)
+		dataChunks.push_back (boost::shared_ptr<SpliceChunk>(chunk));
 	return success;
+}
+
+void ParserSplice::getSequences(std::vector<Sequence> & out) const
+{
+	BOOST_FOREACH (auto chunk, dataChunks)
+	{
+		BOOST_FOREACH (auto data, chunk->data)
+		{
+			if (!data.active)
+				continue; //do not use sequences with data = 0
+			Sequence seq;
+			TSamples introns;
+			assert (data.sequence.size() >= chunk->position);
+
+			for (int i = 0; i < chunk->position; ++i)
+			{
+				introns.push_back (data.sequence[i]);
+			}
+			seq.setSamples (introns);
+			out.push_back(seq);
+
+			TSamples exons;
+			for (int i = chunk->position; i < data.sequence.size(); ++i)
+			{
+				exons.push_back (data.sequence[i]);
+			}
+			seq.setSamples (exons);
+			out.push_back(seq);
+		}
+	}
 }
