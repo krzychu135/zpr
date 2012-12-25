@@ -25,7 +25,7 @@ using ascii::space_type;
 //using ascii::str;
 using boost::phoenix::ref;
 
-typedef std::pair<unsigned int, unsigned int> range;
+typedef std::pair<unsigned, unsigned> range;
 typedef std::vector<range> vrange_t;
 
 struct FullExData
@@ -47,53 +47,57 @@ struct parseFullExData : qi::grammar <Iterator, std::vector<FullExData>()>
 {
 	parseFullExData() : parseFullExData::base_type (output)
 	{
-		//std::cout << "Hello parser!\n";
-
-		output %= fullExData;
+		output %= +fullExData;
 
 		fullExData =
-			omit [lexeme["Seq"]] >>
+			omit [lexeme[">Seq"]] >>
 			omit [space] >>
 			omit [uint_] >>
 			omit [space] >>
 			omit [lexeme["Len:"]] >>
-			omit [-eol] >>
-			omit [-eol] >>
+			omit [eol] >>
+
 			omit [uint_] >>
-			omit [-uint_] >>
+			omit [eol] >>
+
+			omit [uint_] >>
 			omit [lexeme["UTR"]] >>
 			omit [*eol] >>
+
 			omit [lexeme["Intergenic"]] >>
 			omit [*eol] >>
-			//omit [!lexeme["Introns"]] >>
-			"Introns" >>
-			omit [-eol] >>
-			//omit [!uint_] >> 
+			omit ["Introns"] >>
+			omit [eol] >>
+
 			pairSequence >>
-			omit [-eol] >>
-			//omit [!lexeme["Exons"]] >>
-			"Exons" >>
-			omit [-eol] >>
-			//omit [!uint_] >>
+			omit [eol] >>
+
+			omit ["Exons"] >>
+			omit [eol] >>
+
 			pairSequence >>
-			omit [-eol] >>
-			//omit [!lexeme["Data"]] >>
-			"Data" >>
-			omit [-eol] >>
-			//omit [!actg] >>
+			omit [eol] >>
+
+			omit [uint_] >>
+			omit [lexeme["UTR"]] >>
+			omit [*eol] >>
+
+			omit ["Data"] >>
+			omit [eol] >>
+
 			actg >>
-			omit [-eol]
+			omit [-eol] //possibly end of file
 		;
 
-		pairSequence =
-			pair >>
-			omit[space]
+		pairSequence %= +pair
 		;
 
-		pair =
+		pair = //two numbers separated by space
+			//starts with space
+			omit [space] >>
 			uint_ >>
-			space >>
-			uint_ //two numbers separated by space
+			omit [space] >>
+			uint_
 		;
 
 		actg = *(char_("actgACTG"));
@@ -105,7 +109,7 @@ struct parseFullExData : qi::grammar <Iterator, std::vector<FullExData>()>
 	}
 
 	qi::rule<Iterator, range()> pair;
-	qi::rule<Iterator, std::vector<range>()> pairSequence; //pairs are delimited by another space
+	qi::rule<Iterator, vrange_t()> pairSequence; //pairs are delimited by another space
 	qi::rule<Iterator, std::string()> actg;
 	qi::rule<Iterator, FullExData()> fullExData;
 	qi::rule<Iterator, std::vector<FullExData>()> output; 
@@ -114,7 +118,7 @@ struct parseFullExData : qi::grammar <Iterator, std::vector<FullExData>()>
 bool ParserFullEx::tryToParse (std::string & text)
 {
 	//return true; //test
-	return false;
+	//return false;
 
 	//string parser
 
@@ -143,16 +147,16 @@ bool ParserFullEx::tryToParse (std::string & text)
 
 	//spirit parser
 
-	//std::vector<FullExData> v;
+	std::vector<FullExData> v;
 
-	//typedef std::string::const_iterator iterator_type;
-	//iterator_type iter = text.begin();
-	//iterator_type end = text.end();
-	//typedef parseFullExData<iterator_type> P;
-	//P parser;
+	typedef std::string::const_iterator iterator_type;
+	iterator_type iter = text.begin();
+	iterator_type end = text.end();
+	typedef parseFullExData<iterator_type> P;
+	P parser;
 
-	//bool success = qi::parse (iter, end, parser, v);
-	//return success;
+	bool success = qi::parse (iter, end, parser, v);
+	return success;
 }
 void ParserFullEx::getSequences(std::vector<Sequence> & out) const
 {
