@@ -8,12 +8,30 @@
 #include <sstream>
 #include <fstream>
 
+#include <Qt/qapplication.h>
+#include "MainWindow.h"
+#include <boost/thread/thread.hpp>
+#include <boost/ref.hpp>
+class Wind
+{
+public:
+	void operator()(){
+		while(1){
+			//boost::this_thread::sleep_for(boost::chrono::seconds(1));
+			std::cout<<"Wypisz to"<<std::endl;
+		}
+	}
+};
+
 //using namespace System;
 
 int main (int argc, char** argv)
 {
 try
 {
+
+	Wind w;
+	boost::thread t(boost::ref(w));
 ParserFactory::get().initParsers();
 
 for (int i = 1; i < argc; ++i)
@@ -33,6 +51,11 @@ else
 std::cout << "File " << argv[i] << " not parsed\n";
 
 s.close();
+if(t.joinable()){
+	std::cout<<"T.joinable"<<std::endl;
+	t.join();
+}
+
 }
 
 }
