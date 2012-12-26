@@ -45,7 +45,7 @@ int main (int argc, char** argv)
 				Analyzer::get().createSpectrum (seq);
 			}
 		}
-
+		std::cout << "Spectrum analysis complete\n";
 	}
 	catch (std::exception &e)
 	{}

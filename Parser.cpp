@@ -25,16 +25,6 @@ using ascii::space_type;
 //using ascii::str;
 using boost::phoenix::ref;
 
-typedef std::pair<unsigned, unsigned> range;
-typedef std::vector<range> vrange_t;
-
-struct FullExData
-{
-	vrange_t introns;
-	vrange_t exons;
-	std::string data;
-};
-
 BOOST_FUSION_ADAPT_STRUCT(
 	FullExData,
 	(vrange_t, introns)
@@ -102,10 +92,10 @@ struct parseFullExData : qi::grammar <Iterator, std::vector<FullExData>()>
 
 		actg = *(char_("actgACTG"));
 
-		BOOST_SPIRIT_DEBUG_NODE (fullExData);
-		BOOST_SPIRIT_DEBUG_NODE (pairSequence);
-		BOOST_SPIRIT_DEBUG_NODE (pair);
-		BOOST_SPIRIT_DEBUG_NODE (actg);
+		//BOOST_SPIRIT_DEBUG_NODE (fullExData);
+		//BOOST_SPIRIT_DEBUG_NODE (pairSequence);
+		//BOOST_SPIRIT_DEBUG_NODE (pair);
+		//BOOST_SPIRIT_DEBUG_NODE (actg);
 	}
 
 	qi::rule<Iterator, range()> pair;
@@ -120,60 +110,33 @@ bool ParserFullEx::tryToParse (std::string & text)
 	//return true; //test
 	//return false;
 
-	//string parser
-
-	//try
-	//{
-	//	std::string buffer;
-	//	size_t pos = 0;
-	//	while (text.size())
-	//	{
-	//		pos = text.find ("Introns", pos);
-	//		pos = text.find (" ", pos);
-	//		unsigned val;
-	//		while (text[pos] < 'A')
-	//		{
-	//			text >> val;
-	//		}
-	//	}
-	//}
-	//catch (std::exception &e)
-	//{
-	//	return false;
-	//}
-	//return true;
-
-
-
-	//spirit parser
-
-	std::vector<FullExData> v;
-
 	typedef std::string::const_iterator iterator_type;
 	iterator_type iter = text.begin();
 	iterator_type end = text.end();
 	typedef parseFullExData<iterator_type> P;
 	P parser;
 
-	bool success = qi::parse (iter, end, parser, v);
+	bool success = qi::parse (iter, end, parser, data);
 	return success;
 }
 void ParserFullEx::getSequences(std::vector<Sequence> & out) const
 {
-	for (int i = 0; i < 10; ++i)
+	Sequence seq;
+
+	BOOST_FOREACH (auto fullExData, data)
 	{
-		Sequence seq;
-		TSamples samples;
-		for (int j = 0; j < 9; ++j)
+		BOOST_FOREACH (auto intron, fullExData.introns)
 		{
-			samples.push_back (j - 3 * i);
-			for (int k = 0; k < 13; ++k)
-			{
-				samples.push_back ((i * j + k) % 7);
-			}
+			TSamples samples (fullExData.data.begin() + intron.first, fullExData.data.begin() + intron.second); //copy range
+			seq.setSamples (samples);
+			out.push_back (seq);
 		}
-		seq.setSamples(samples);
-		out.push_back (seq);
+		BOOST_FOREACH (auto exon, fullExData.exons)
+		{
+			TSamples samples (fullExData.data.begin() + exon.first, fullExData.data.begin() + exon.second); //copy range
+			seq.setSamples (samples);
+			out.push_back (seq);
+		}
 	}
 }
 
