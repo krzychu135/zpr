@@ -22,8 +22,14 @@ bool ParserFactory::tryToParse (std::string & text)
 {
 	BOOST_FOREACH (auto p, parsers)
 	{
+		boost::shared_ptr <std::vector<Sequence>> sequences (new std::vector<Sequence>);
 		if (p->tryToParse (text))
+		{
+			p->getSequences (*sequences);
+			if (sequences->size())
+				allSequences.push_back (sequences);
 			return true;
+		}
 	}
 	return false;
 

@@ -13,6 +13,7 @@ public:
 	void initParsers();
 	void registerParser (const Parser & parser);
 	bool tryToParse (std::string & text);
+	std::vector <boost::shared_ptr<std::vector <Sequence>>> allSequences;
 private:
 	std::vector<Parser*> parsers;
 
