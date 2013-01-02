@@ -11,6 +11,8 @@ class Spectrum
 	std::vector<double> samples;
 public:
 	Spectrum();
+    std::vector<double> * getSamples();
+    void setSamples(const std::vector<double>);
 };
 
 #endif //SPECTRUM_H_

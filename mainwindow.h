@@ -5,9 +5,18 @@
 #include <QModelIndex>
 #include <QGraphicsScene>
 #include "Sequence.h"
+#include <QListWidgetItem>
 
 
-typedef std::map<std::string, Sequence *> Sequences;
+typedef std::vector<Sequence *> Sequences;
+
+class QListWidgetItemBetter: public QListWidgetItem
+{
+    QListWidgetItemBetter():QListWidgetItem(){}
+    ~QListWidgetItemBetter(){}
+
+
+};
 
 namespace Ui {
 class MainWindow;

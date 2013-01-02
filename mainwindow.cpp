@@ -21,22 +21,25 @@ void MainWindow::on_listWidget_clicked(const QModelIndex &index)
 void MainWindow::addSequence(Sequence *s){
 
     std::string item = boost::lexical_cast<std::string>(this->seq.size());
-   // Sequences[item] = s;
-    ui->listWidget->addItem(item.c_str());
-
+    QListWidgetItem * qitem = new QListWidgetItem(item.c_str());
+    qitem->setData(Qt::UserRole,this->seq.size());
+    this->seq.push_back(s);
+    ui->listWidget->addItem(qitem);
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    std::string type = ui->listWidget->selectedItems().first()->text().toStdString();
-    //Sequence * s = this->seq[type];
-    //s->getSpectrum()->samples;
-    ui->customPlot->addGraph();
-    QVector<double> x(101), y(101); // initialize with entries 0..100
-    for (int i=0; i<101; ++i)
+    auto d = ui->listWidget->selectedItems().first()->data(Qt::UserRole).toInt();
+        Sequence * s = seq.at(d);
+
+
+    std::vector<double> * samples = s->getSpectrum()->getSamples();
+
+    QVector<double> x(samples->size()), y(samples->size()); // initialize with entries 0..100
+    for (int i=0; i<samples->size(); ++i)
     {
-      x[i] = i/50.0 - 1; // x goes from -1 to 1
-      y[i] = x[i]*x[i];  // let's plot a quadratic function
+      x[i] = i; // x goes from -1 to 1
+      y[i] = samples->at(i);  // let's plot a quadratic function
     }
     // create graph and assign data to it:
     ui->customPlot->addGraph();
@@ -45,8 +48,8 @@ void MainWindow::on_pushButton_2_clicked()
     ui->customPlot->xAxis->setLabel("x");
     ui->customPlot->yAxis->setLabel("y");
     // set axes ranges, so we see all data:
-    ui->customPlot->xAxis->setRange(-1, 1);
-    ui->customPlot->yAxis->setRange(0, 1);
+    ui->customPlot->xAxis->setRange(0, 20);
+    ui->customPlot->yAxis->setRange(-20,30);
     ui->customPlot->replot();
 
     //Sequence *selected = this->sequences[row];

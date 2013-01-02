@@ -17,7 +17,12 @@ Program::Program(int argc, char *argv[]) {
     window_->setGeometry(100, 100, 500, 400);
     window_->setWindowTitle("Spectrum 1.0");
     window_->show();
-
+    Sequence * n = new Sequence();
+    std::vector<double> vec = {2,43,34.2,17,2,1,21,1,1,1};
+    Spectrum * spe = new Spectrum();
+    spe->setSamples(vec);
+    n->setSpectrum(spe);
+    window_->addSequence(n);
     ParserFactory::get().initParsers();
     for (int i = 1; i < argc; ++i)
     {
