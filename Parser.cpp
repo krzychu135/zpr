@@ -214,8 +214,9 @@ bool ParserSplice::tryToParse (std::string & text)
 	bool r = qi::parse(iter, end, unsignedParser, chunk->position);
 
 	//BOOST_SPIRIT_DEBUG_NODE (spliceParser);
-	auto afterNumberPos = text.begin() + newLine + 1;
-    bool success = qi::parse (afterNumberPos, text.end(), spliceParser, chunk->data);
+	iterator_type afterNumberPos = text.begin() + newLine + 1;
+	end = text.end(); //to avoid g++ compilation issues
+    bool success = qi::parse (afterNumberPos, end, spliceParser, chunk->data);
     if (success)
 		dataChunks.push_back (boost::shared_ptr<SpliceChunk>(chunk));
     return success;
