@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 /*
  * Program.cpp
  *
@@ -17,8 +19,11 @@ Program::Program(int argc, char *argv[]) {
     window_->setGeometry(100, 100, 500, 400);
     window_->setWindowTitle("Spectrum 1.0");
     window_->show();
+
     Sequence * n = new Sequence();
-    std::vector<double> vec = {2,43,34.2,17,2,1,21,1,1,1};
+    std::vector<double> vec;
+	vec += 2.0, 43.0, 34.2, 17.0, 2.0, 1.0, 21.0, 1.0, 1.0, 1.0;
+
     Spectrum * spe = new Spectrum();
     spe->setSamples(vec);
     n->setSpectrum(spe);

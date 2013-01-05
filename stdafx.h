@@ -16,6 +16,7 @@
 
 #include "boost/foreach.hpp"
 #include "boost/assign.hpp"
+using namespace boost::assign;
 #include "boost/shared_ptr.hpp"
 
 #include <boost/iostreams/stream.hpp>
