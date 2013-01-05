@@ -214,10 +214,10 @@ bool ParserSplice::tryToParse (std::string & text)
 	bool r = qi::parse(iter, end, unsignedParser, chunk->position);
 
 	//BOOST_SPIRIT_DEBUG_NODE (spliceParser);
-    /*bool success = qi::parse (text.begin() + newLine + 1, text.end(), spliceParser, chunk->data);
+    bool success = qi::parse (end , text.end(), spliceParser, chunk->data);
     if (success)
 		dataChunks.push_back (boost::shared_ptr<SpliceChunk>(chunk));
-    return success;*/
+    return success;
 }
 
 void ParserSplice::getSequences(std::vector<Sequence> & out) const
