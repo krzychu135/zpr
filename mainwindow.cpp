@@ -1,11 +1,12 @@
+#include "stdafx.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <boost/lexical_cast.hpp>
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    QMainWindow(parent)
 {
+	ui = new Ui::MainWindow();
     ui->setupUi(this);
 }
 

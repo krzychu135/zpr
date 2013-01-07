@@ -107,7 +107,7 @@ struct parseFullExData : qi::grammar <Iterator, std::vector<FullExData>()>
 
 bool ParserFullEx::tryToParse (std::string & text)
 {
-	return true; //test
+    //return true; //test
 	//return false;
 
 	typedef std::string::const_iterator iterator_type;
@@ -197,7 +197,7 @@ struct parseUnsigned : qi::grammar <Iterator, unsigned()>
 
 bool ParserSplice::tryToParse (std::string & text)
 {
-    return true; //test
+    //return true; //test
 	//return false;
 
 	auto chunk = new SpliceChunk;
@@ -212,9 +212,10 @@ bool ParserSplice::tryToParse (std::string & text)
 	P2 unsignedParser;
 
 	bool r = qi::parse(iter, end, unsignedParser, chunk->position);
-
 	//BOOST_SPIRIT_DEBUG_NODE (spliceParser);
-    bool success = qi::parse (end , text.end(), spliceParser, chunk->data);
+	iterator_type afterNumberPos = text.begin() + newLine + 1;
+	end = text.end(); //to avoid g++ compilation issues
+    bool success = qi::parse (afterNumberPos, end, spliceParser, chunk->data);
     if (success)
 		dataChunks.push_back (boost::shared_ptr<SpliceChunk>(chunk));
     return success;

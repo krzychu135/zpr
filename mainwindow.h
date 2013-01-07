@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
+
 #define MAINWINDOW_H
 
+#include "stdafx.h"
 #include <QMainWindow>
 #include <QModelIndex>
 #include <QGraphicsScene>
@@ -27,7 +29,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit MainWindow(QWidget *parent = 0);
+	explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
     void addSequence(Sequence *s);

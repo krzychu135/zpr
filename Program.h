@@ -22,7 +22,7 @@
 #include "ParserFactory.h"
 #include "mainwindow.h"
 
-
+#include "stdafx.h"
 
 /**
  * Main class providing basic functionality and launching others functions.

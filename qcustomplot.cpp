@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 /***************************************************************************
 **                                                                        **
 **  QCustomPlot, a simple to use, modern plotting widget for Qt           **
