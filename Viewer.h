@@ -9,15 +9,15 @@
 #ifndef VIEWER_H_
 #define VIEWER_H_
 
-#include "Spectrum.h"
+#include "Sequence.h"
 
 class Viewer {
 private:
-	Spectrum * spectrum_;
+    Sequence * sequence_;
 public:
 	virtual ~Viewer();
 	Viewer();
-	Viewer(Spectrum * s){ spectrum_ = s; }
+    Viewer(Sequence* s){ sequence_ = s; }
 
 	virtual void Show()=0;
 };

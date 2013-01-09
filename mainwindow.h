@@ -10,7 +10,7 @@
 #include <QListWidgetItem>
 
 
-typedef std::vector<Sequence *> Sequences;
+typedef std::vector<Sequence> Sequences;
 
 class QListWidgetItemBetter: public QListWidgetItem
 {
@@ -32,7 +32,8 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    void addSequence(Sequence *s);
+    void addSequence(Sequence &s);
+    void addSequences();
     
 private slots:
     void on_listWidget_clicked(const QModelIndex &index);
@@ -40,6 +41,10 @@ private slots:
     void on_pushButton_2_clicked();
 
     void on_pushButton_clicked();
+
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_5_clicked();
 
 private:
     Ui::MainWindow *ui;

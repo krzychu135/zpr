@@ -27,7 +27,7 @@ Program::Program(int argc, char *argv[]) {
     Spectrum * spe = new Spectrum();
     spe->setSamples(vec);
     n->setSpectrum(spe);
-    window_->addSequence(n);
+    window_->addSequence(*n);
     ParserFactory::get().initParsers();
     for (int i = 1; i < argc; ++i)
     {
@@ -35,9 +35,10 @@ Program::Program(int argc, char *argv[]) {
     }
     //TODO: making transformation in diffrent thread
     transform_sequence();
+    window_->addSequences();
     //boost::thread process(&transform_sequence);
 
-    prog_->exec();
+
 
 
 
@@ -52,7 +53,7 @@ Program::~Program() {
 
 int Program::start(){
 	std::cout<<"This text is showing now"<<std::endl;
-    return 0;
+    return prog_->exec();
 }
 
 void Program::transform_file(char * file)
@@ -88,7 +89,6 @@ void Program::transform_sequence()
         {
             std::cout<<"Sequence processing"<<std::endl;
             Analyzer::get().createSpectrum (seq);
-            window_->addSequence(&seq);
 
         }
     }

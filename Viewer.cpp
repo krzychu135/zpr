@@ -12,8 +12,7 @@ Viewer::~Viewer() {
 	// TODO Auto-generated destructor stub
 }
 
-Viewer::Viewer() {
-	// TODO Auto-generated constructor stub
+Viewer::Viewer():sequence_(NULL) {
 
 }
 
