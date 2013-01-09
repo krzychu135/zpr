@@ -12,10 +12,13 @@ struct SpliceChunk;
 struct FullExData;
 
 class Parser : public boost::noncopyable
+///Transforms input text to output data sequences
 {
 public:
-	virtual void getSequences (std::vector<Sequence> & out) const = 0;
+	///tries to parse text to internal structures of parser
 	virtual bool tryToParse (std::string & text) {return false;};
+	///generates actual Sequences ready to analyze from internal structures
+	virtual void getSequences (std::vector<Sequence> & out) const = 0;
 };
 
 class ParserSplice : public Parser
@@ -28,6 +31,7 @@ public:
 };
 
 struct FullExData
+///internal data structure used by ParserFullEx
 {
 	vrange_t introns;
 	vrange_t exons;

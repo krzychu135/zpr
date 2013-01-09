@@ -34,6 +34,7 @@ BOOST_FUSION_ADAPT_STRUCT(
 
 template <typename Iterator>
 struct parseFullExData : qi::grammar <Iterator, std::vector<FullExData>()>
+///main grammar for ParserFullEx class
 {
 	parseFullExData() : parseFullExData::base_type (output)
 	{
@@ -142,6 +143,7 @@ void ParserFullEx::getSequences(std::vector<Sequence> & out) const
 }
 
 struct SpliceData
+///helper data struct fro Splice parser
 {
 	unsigned active; //0 - pomijamy
 	std::string sequence;
@@ -154,6 +156,7 @@ BOOST_FUSION_ADAPT_STRUCT(
 )
 
 struct SpliceChunk
+///helper data struct fro Splice parser
 {
 	size_t position;
 	std::vector<SpliceData> data;
@@ -161,6 +164,7 @@ struct SpliceChunk
 
 template <typename Iterator>
 struct parseSpliceData : qi::grammar <Iterator, std::vector<SpliceData>()>
+///main grammar for ParserSplice class
 {
 	parseSpliceData() : parseSpliceData::base_type (output)
 	{
@@ -186,6 +190,7 @@ struct parseSpliceData : qi::grammar <Iterator, std::vector<SpliceData>()>
 
 template <typename Iterator>
 struct parseUnsigned : qi::grammar <Iterator, unsigned()>
+///helper parser that outputs unsigned integer
 {
 	parseUnsigned() : parseUnsigned::base_type (output)
 	{

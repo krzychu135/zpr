@@ -4,6 +4,7 @@
 #define SPECTRUM_H_
 
 class Spectrum
+///Spectrum created by FFT of data Sequence
 {
 	friend class Analyzer;
 	friend class Sequence;
