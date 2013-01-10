@@ -10,11 +10,14 @@
 #define BMPFILEVIEWER_H_
 
 #include "FileViewer.h"
+#include "ChartViewer.h"
 
-class BMPFileViewer: public FileViewer {
+class BMPFileViewer: public FileViewer, ChartViewer{
 public:
 	BMPFileViewer();
 	virtual ~BMPFileViewer();
+    void Show(Spectrum *s);
+    bool Save(std::string name);
 };
 
 #endif /* BMPFILEVIEWER_H_ */

@@ -59,17 +59,5 @@ void ChartViewer::Show(Spectrum * s)
     customPlot->yAxis->setRange(min,max);
     customPlot->replot();
     customPlot->show();
-    // create graph and assign data to it:
-    /*ui->customPlot->clearGraphs();
-    ui->customPlot->addGraph();
-
-    ui->customPlot->graph(0)->setData(x, y);
-    // give the axes some labels:
-    ui->customPlot->xAxis->setLabel("x");
-    ui->customPlot->yAxis->setLabel("y");
-    // set axes ranges, so we see all data:
-    ui->customPlot->xAxis->setRange(0, samples->size());
-    ui->customPlot->yAxis->setRange(min,max);
-    ui->customPlot->replot();*/
 
 }

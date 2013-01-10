@@ -4,7 +4,7 @@
 #include <boost/lexical_cast.hpp>
 #include "ParserFactory.h"
 #include "ChartViewer.h"
-
+#include "BMPFileViewer.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
@@ -50,7 +50,9 @@ void MainWindow::addSequences()
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    for(int i=0;i<ui->listWidget->count();i++){
 
+    }
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -61,6 +63,13 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_3_clicked()
 {
     std::cout<<"clicked3"<<std::endl;
+    if(ui->listWidget->selectedItems().isEmpty()) return; //do nothing when nothing is checked
+    auto d = ui->listWidget->selectedItems().first()->data(Qt::UserRole).toInt();
+    Spectrum * s = seq.at(d);
+    if(s!=NULL){
+        BMPFileViewer nowy;
+        nowy.Show(s);
+    }
 }
 
 void MainWindow::on_pushButton_5_clicked()
@@ -79,8 +88,12 @@ void MainWindow::on_pushButton_4_clicked()
     ChartViewer nowy;
     nowy.Show(s);
     std::cout<<"Podstawiam"<<std::endl;
-    //ui->customPlot = nowy.getCustomPlot();
+    ui->customPlot = nowy.getCustomPlot();
+    ui->customPlot->repaint();
+    /*ui->horizontalLayout_3->removeWidget(ui->customPlot);
+    ui->horizontalLayout_3->addWidget(nowy.getCustomPlot());
     //this->repaint();
+    ui->customPlot->hide();*/
     std::cout<<"Podstawiłem"<<std::endl;
 
 

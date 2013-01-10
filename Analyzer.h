@@ -12,6 +12,7 @@ public:
 
 	//FFT
 	Spectrum analyze (const Sequence & s) const;
+    Spectrum analyze2(const Sequence &s)const;
 	void createSpectrum (Sequence & s) const;
 private:
 

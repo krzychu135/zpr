@@ -36,7 +36,7 @@ Program::Program(int argc, char *argv[]) {
 
     //after transformation adding all sequences to gui
     std::vector<double> samp;
-    for(int i=0;i<60;i++)
+    for(int i=0;i<63;i++)
     {
         samp += 0;
     }
