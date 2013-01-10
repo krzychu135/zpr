@@ -47,6 +47,7 @@ Program::Program(int argc, char *argv[]) {
     window_->addSequence(s);
     window_->addSequences();
     //boost::thread process(&transform_sequence);
+    prog_->exec();
 
 }
 
@@ -59,7 +60,7 @@ Program::~Program() {
 
 int Program::start(){
 
-    return prog_->exec();
+    return 0;
 }
 
 void Program::transform_file(char * file)

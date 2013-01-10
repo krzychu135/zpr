@@ -79,8 +79,8 @@ void MainWindow::on_pushButton_4_clicked()
     ChartViewer nowy;
     nowy.Show(s);
     std::cout<<"Podstawiam"<<std::endl;
-    ui->customPlot = nowy.getCustomPlot();
-    this->repaint();
+    //ui->customPlot = nowy.getCustomPlot();
+    //this->repaint();
     std::cout<<"Podstawiłem"<<std::endl;
 
 
