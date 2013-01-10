@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 #include <boost/lexical_cast.hpp>
 #include "ParserFactory.h"
+#include "ChartViewer.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -16,23 +17,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_listWidget_clicked(const QModelIndex &index)
-{
-
-}
 void MainWindow::addSequence(Sequence &s){
     try{
-        std::cout<<s.getSpectrum()->getSamples()->size()<<std::endl;
+    std::string seqsize = "";//boost::lexical_cast<std::string>(s.getSpectrum()->getSamples()->size());
     std::string item = boost::lexical_cast<std::string>(this->seq.size());
-    if(this->seq.size()>10)return;
-    QListWidgetItem * qitem = new QListWidgetItem(item.c_str());
+    std::string label = item + " " + seqsize;
+    //if(this->seq.size()>10)return;
+    QListWidgetItem * qitem = new QListWidgetItem(label.c_str());
     qitem->setData(Qt::UserRole,this->seq.size());
-    this->seq.push_back(s);
+    this->seq.push_back(s.getSpectrum());
     ui->listWidget->addItem(qitem);
     }catch(std::exception e){
         //do nothing
     }
 }
+void MainWindow::on_listWidget_clicked(const QModelIndex &index)
+{
+
+}
+
 void MainWindow::addSequences()
 {
     BOOST_FOREACH (boost::shared_ptr<std::vector <Sequence>> vec, ParserFactory::get().allSequences)
@@ -48,23 +51,6 @@ void MainWindow::addSequences()
 void MainWindow::on_pushButton_2_clicked()
 {
 
-    try{
-        if(ui->listWidget->selectedItems().isEmpty()) return; //do nothing when nothing is checked
-        auto d = ui->listWidget->selectedItems().first()->data(Qt::UserRole).toInt();
-        Sequence s = seq.at(d);
-
-
-
-
-
-    //Sequence *selected = this->sequences[row];
-    //rysuj wykres
-    //ui->graphicsView->setScene(drawChart(NULL));
-    //std::cout<<"szerokość: "<<ui->graphicsView->width()<<" wysokość"<<ui->graphicsView->height()<<std::endl;
-    //ui->graphicsView->show();
-    }catch(std::out_of_range out){
-
-    }
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -74,10 +60,38 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-
+    std::cout<<"clicked3"<<std::endl;
 }
 
 void MainWindow::on_pushButton_5_clicked()
 {
+    std::cout<<"clicked4"<<std::endl;
+}
 
+void MainWindow::on_pushButton_4_clicked()
+{
+    std::cout<<"clicked"<<std::endl;
+    try{
+        if(ui->listWidget->selectedItems().isEmpty()) return; //do nothing when nothing is checked
+        auto d = ui->listWidget->selectedItems().first()->data(Qt::UserRole).toInt();
+        Spectrum * s = seq.at(d);
+        if(s!=NULL){
+    ChartViewer nowy;
+    nowy.Show(s);
+    std::cout<<"Podstawiam"<<std::endl;
+    ui->customPlot = nowy.getCustomPlot();
+    this->repaint();
+    std::cout<<"Podstawiłem"<<std::endl;
+
+
+
+    //Sequence *selected = this->sequences[row];
+    //rysuj wykres
+    //ui->graphicsView->setScene(drawChart(NULL));
+    //std::cout<<"szerokość: "<<ui->graphicsView->width()<<" wysokość"<<ui->graphicsView->height()<<std::endl;
+    //ui->graphicsView->show();
+        }
+    }catch(std::out_of_range out){
+
+    }
 }

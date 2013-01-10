@@ -8,10 +8,23 @@
  */
 
 #include "Program.h"
+#include <math.h>
 
 Program::Program(int argc, char *argv[]) {
+
+    //processing data
+    ParserFactory::get().initParsers();
+    for (int i = 1; i < argc; ++i)
+    {
+        transform_file(argv[i]);
+    }
+    transform_file("../data/ATFullExOrIn.dat");
+    //TODO: making transformation in diffrent thread
+    transform_sequence();
+    std::cout<<"Sequences transformed"<<std::endl;
     //inicial gui application
 	prog_ = new QApplication(argc, argv);
+
 
     //creating main mindow
     window_ = new MainWindow();
@@ -20,27 +33,20 @@ Program::Program(int argc, char *argv[]) {
     window_->setWindowTitle("Spectrum 1.0");
     window_->show();
 
-    Sequence * n = new Sequence();
-    std::vector<double> vec;
-	vec += 2.0, 43.0, 34.2, 17.0, 2.0, 1.0, 21.0, 1.0, 1.0, 1.0;
 
-    Spectrum * spe = new Spectrum();
-    spe->setSamples(vec);
-    n->setSpectrum(spe);
-    window_->addSequence(*n);
-    ParserFactory::get().initParsers();
-    for (int i = 1; i < argc; ++i)
+    //after transformation adding all sequences to gui
+    std::vector<double> samp;
+    for(int i=0;i<60;i++)
     {
-        transform_file(argv[i]);
+        samp += 0;
     }
-    //TODO: making transformation in diffrent thread
-    transform_sequence();
+    samp.at(3) = 1;
+    Sequence s;
+    s.setSamples(samp);
+    Analyzer::get().createSpectrum(s);
+    window_->addSequence(s);
     window_->addSequences();
     //boost::thread process(&transform_sequence);
-
-
-
-
 
 }
 
@@ -52,7 +58,7 @@ Program::~Program() {
 }
 
 int Program::start(){
-	std::cout<<"This text is showing now"<<std::endl;
+
     return prog_->exec();
 }
 
@@ -85,11 +91,11 @@ void Program::transform_sequence()
     //BOOST_FOREACH (auto vec, ParserFactory::get().allSequences)
     BOOST_FOREACH (boost::shared_ptr<std::vector <Sequence>> vec, ParserFactory::get().allSequences)
     {
-        BOOST_FOREACH (auto seq, *vec) //reference
+        BOOST_FOREACH (Sequence & seq, *vec) //reference
         {
             std::cout<<"Sequence processing"<<std::endl;
             Analyzer::get().createSpectrum (seq);
-
+            std::cout<<"zbadane"<<std::endl;
         }
     }
     std::cout << "Spectrum analysis complete\n";

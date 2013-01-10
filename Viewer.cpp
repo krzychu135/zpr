@@ -12,7 +12,7 @@ Viewer::~Viewer() {
 	// TODO Auto-generated destructor stub
 }
 
-Viewer::Viewer():sequence_(NULL) {
+Viewer::Viewer():spectrum_(NULL) {
 
 }
 

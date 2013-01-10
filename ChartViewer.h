@@ -10,16 +10,18 @@
 #define CHARTVIEWER_H_
 
 #include "Viewer.h"
-
+#include "qcustomplot.h"
 
 class ChartViewer: public Viewer {
-	void create_window();
-	void draw_chart();
+    void create_window(){}
+    void draw_chart(){}
 	//MainWindow chart;
+    QCustomPlot * customPlot;
 public:
 	ChartViewer();
+    QCustomPlot * getCustomPlot()const { return customPlot; }
 	virtual ~ChartViewer();
-	virtual void Show();
+    virtual void Show(Spectrum * s);
 };
 
 #endif /* CHARTVIEWER_H_ */

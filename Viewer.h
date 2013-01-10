@@ -13,13 +13,13 @@
 
 class Viewer {
 private:
-    Sequence * sequence_;
+    Spectrum * spectrum_;
 public:
 	virtual ~Viewer();
 	Viewer();
-    Viewer(Sequence* s){ sequence_ = s; }
+    Viewer(Spectrum* s){ spectrum_ = s; }
 
-	virtual void Show()=0;
+    virtual void Show(Spectrum *)=0;
 };
 
 #endif /* VIEWER_H_ */

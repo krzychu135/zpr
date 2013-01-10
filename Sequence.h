@@ -13,7 +13,7 @@ class Sequence
 {
 	///Empty or already calculated fft related to this sequence
 	TSamples samples;
-	Spectrum * spectrum; 
+    Spectrum * spectrum;
 public:
 	Sequence();
 	Spectrum * getSpectrum() const;
