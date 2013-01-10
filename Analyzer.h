@@ -4,8 +4,9 @@ class Spectrum;
 class Sequence;
 
 class Analyzer : public boost::noncopyable
-///Singleton
+///Spectrum analyzer, performs FFT on given Sequences
 {
+///Implemented as Singleton
 public:
 	static Analyzer & get();
 

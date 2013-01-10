@@ -10,10 +10,12 @@ typedef double TSample;
 typedef std::vector<TSample> TSamples;
 
 class Sequence
+///data Sequence with optional Spectrum of that sequence
 {
-	///Empty or already calculated fft related to this sequence
 	TSamples samples;
-    Spectrum * spectrum;
+	///Sequence of numbers to analyze
+	Spectrum * spectrum;
+	///Empty or already calculated fft related to this sequence
 public:
 	Sequence();
 	Spectrum * getSpectrum() const;
