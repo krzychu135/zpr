@@ -19,7 +19,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::addSequence(Sequence &s){
     try{
-    std::string seqsize = "";//boost::lexical_cast<std::string>(s.getSpectrum()->getSamples()->size());
+    std::string seqsize = boost::lexical_cast<std::string>(s.getSpectrum()->getSamples()->size());
     std::string item = boost::lexical_cast<std::string>(this->seq.size());
     std::string label = item + " " + seqsize;
     //if(this->seq.size()>10)return;
@@ -62,7 +62,7 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    std::cout<<"clicked3"<<std::endl;
+//    std::cout<<"clicked3"<<std::endl;
     if(ui->listWidget->selectedItems().isEmpty()) return; //do nothing when nothing is checked
     auto d = ui->listWidget->selectedItems().first()->data(Qt::UserRole).toInt();
     Spectrum * s = seq.at(d);
@@ -87,14 +87,14 @@ void MainWindow::on_pushButton_4_clicked()
         if(s!=NULL){
     ChartViewer nowy;
     nowy.Show(s);
-    std::cout<<"Podstawiam"<<std::endl;
+//    std::cout<<"Podstawiam"<<std::endl;
     ui->customPlot = nowy.getCustomPlot();
     ui->customPlot->repaint();
     /*ui->horizontalLayout_3->removeWidget(ui->customPlot);
     ui->horizontalLayout_3->addWidget(nowy.getCustomPlot());
     //this->repaint();
     ui->customPlot->hide();*/
-    std::cout<<"Podstawiłem"<<std::endl;
+//    std::cout<<"Podstawiłem"<<std::endl;
 
 
 

@@ -51,12 +51,13 @@ void ChartViewer::Show(Spectrum * s)
     customPlot->addGraph();
 
     customPlot->graph(0)->setData(x, y);
+
         // give the axes some labels:
     customPlot->xAxis->setLabel("x");
     customPlot->yAxis->setLabel("y");
         // set axes ranges, so we see all data:
     customPlot->xAxis->setRange(0, samples->size());
-    customPlot->yAxis->setRange(min,max);
+    customPlot->yAxis->setRange(min-(max-min)/10,max+(max-min)/10);
     customPlot->replot();
     customPlot->show();
 

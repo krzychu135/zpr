@@ -18,7 +18,8 @@ Program::Program(int argc, char *argv[]) {
     {
         transform_file(argv[i]);
     }
-    transform_file("../data/ATFullExOrIn.dat");
+    //transform_file("../data/ATFullExOrIn.dat");
+    transform_file("../data/spliceATrainKIS");
     //TODO: making transformation in diffrent thread
     transform_sequence();
     std::cout<<"Sequences transformed"<<std::endl;
@@ -36,11 +37,11 @@ Program::Program(int argc, char *argv[]) {
 
     //after transformation adding all sequences to gui
     std::vector<double> samp;
-    for(int i=0;i<63;i++)
+    for(int i=0;i<128;i++)
     {
-        samp += 0;
+        samp += sin(i) + cos(2*i);
     }
-    samp.at(3) = 1;
+    //samp.at(3) = 1;
     Sequence s;
     s.setSamples(samp);
     Analyzer::get().createSpectrum(s);
