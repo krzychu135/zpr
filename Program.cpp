@@ -8,6 +8,7 @@
  */
 
 #include "Program.h"
+#include "Exceptions.h"
 #include <math.h>
 
 Program::Program(int argc, char *argv[]) {
@@ -16,7 +17,14 @@ Program::Program(int argc, char *argv[]) {
     ParserFactory::get().initParsers();
     for (int i = 1; i < argc; ++i)
     {
-        transform_file(argv[i]);
+		try
+		{
+			transform_file(argv[i]);
+		}
+		catch (parserException & e)
+		{
+			std::cout << e.message << std::endl;
+		}
     }
     //transform_file("../data/ATFullExOrIn.dat");
     transform_file("../data/spliceATrainKIS");
@@ -66,24 +74,35 @@ int Program::start(){
 
 void Program::transform_file(char * file)
 {
-    std::fstream s;
-    s.open (file);
+	std::string fileName (file);
+	std::fstream s;
+	std::string text;
+	try
+	{
+		s.open (file);
 
-    std::string text;
-    char buffer[4096];
-    while (s.read (buffer, sizeof(buffer)))
-        text.append (buffer, sizeof(buffer));
-    text.append(buffer, s.gcount());
+		char buffer[4096];
+		while (s.read (buffer, sizeof(buffer)))
+			text.append (buffer, sizeof(buffer));
+		text.append(buffer, s.gcount());
 
-    if (ParserFactory::get().tryToParse (text))
-    {
-        std::cout << "File " << file << " parsed\n";
-    }
-    else
-        std::cout << "File " << file << " not parsed\n";
+		s.close();
+	}
+	catch (std::exception & e)
+	{
+		throw fileException ("Nie uda³o siê otworzyæ pliku " + fileName);
+	}
 
-    s.close();
-
+	if (ParserFactory::get().tryToParse (text))
+	{
+		std::cout << "File " << file << " parsed\n";
+	}
+	else
+	{
+		std::cout << "File " << file << " not parsed\n";
+		throw parserException ("Parsowanie pliku " + fileName + "  nie powiod³o siê");
+	}
+	
 }
 void Program::transform_sequence()
 {
