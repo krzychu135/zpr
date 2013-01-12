@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "includes.h"
 
 #ifndef SPECTRUM_H_
 #define SPECTRUM_H_

@@ -4,7 +4,7 @@
  *  Created on: 25-11-2012
  *      Author: krzysiek
  */
-#include "stdafx.h"
+#include "includes.h"
 
 #ifndef CHARTVIEWER_H_
 #define CHARTVIEWER_H_

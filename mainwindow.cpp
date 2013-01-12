@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "includes.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <boost/lexical_cast.hpp>

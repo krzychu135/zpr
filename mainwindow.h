@@ -2,7 +2,7 @@
 
 #define MAINWINDOW_H
 
-#include "stdafx.h"
+#include "includes.h"
 #include <QMainWindow>
 #include <QModelIndex>
 #include <QGraphicsScene>

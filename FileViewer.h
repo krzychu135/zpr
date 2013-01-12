@@ -4,7 +4,7 @@
  *  Created on: 25-11-2012
  *      Author: krzysiek
  */
-#include "stdafx.h"
+#include "includes.h"
 
 #ifndef FILEVIEWER_H_
 #define FILEVIEWER_H_
