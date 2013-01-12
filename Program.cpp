@@ -39,7 +39,7 @@ Program::Program(int argc, char *argv[]) {
     std::vector<double> samp;
     for(int i=0;i<128;i++)
     {
-        samp += sin(i) + cos(2*i);
+        samp += sin((double)i) + cos((double)2*i);
     }
     //samp.at(3) = 1;
     Sequence s;

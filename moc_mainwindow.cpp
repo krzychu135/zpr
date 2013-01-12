@@ -1,3 +1,5 @@
+#include "stdafx.h"
+
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
