@@ -1,9 +1,8 @@
 // ZPR.cpp : main project file.
 
-#include "stdafx.h"
+#include "includes.h"
 #include "Program.h"
-
-
+#include "Exceptions.h"
 
 int main (int argc, char** argv)
 {
@@ -11,6 +10,10 @@ int main (int argc, char** argv)
 	{
 		Program prog(argc,argv);
 		return prog.start();
+	}
+	catch (namedException &e)
+	{
+		std::cout << e.message << std::endl;
 	}
 	catch (std::exception &e)
 	{

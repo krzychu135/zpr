@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "includes.h"
 
 class Spectrum;
 class Sequence;

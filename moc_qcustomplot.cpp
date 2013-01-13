@@ -1,3 +1,5 @@
+#include "includes.h"
+
 /****************************************************************************
 ** Meta object code from reading C++ file 'qcustomplot.h'
 **

@@ -7,7 +7,7 @@
 
 #ifndef PROGRAM_H_
 #define PROGRAM_H_
-
+#include "includes.h"
 
 #include <sstream>
 #include <fstream>
@@ -15,14 +15,10 @@
 #include <boost/thread/thread.hpp>
 #include <boost/ref.hpp>
 
-#include "stdafx.h"
-
 #include "Graph.h"
 #include "Analyzer.h"
 #include "ParserFactory.h"
 #include "mainwindow.h"
-
-#include "stdafx.h"
 
 /**
  * Main class providing basic functionality and launching others functions.
