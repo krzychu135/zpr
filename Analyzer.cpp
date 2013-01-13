@@ -50,7 +50,7 @@ void Analyzer::createSpectrum (Sequence & s) const
 Spectrum Analyzer::analyze2(const Sequence &s)const
 {
     int i,n=s.numericalSamples().size();
-    double data[n];
+    double *data = new double[n];
     for(int i=0;i<s.numericalSamples().size();i++)
     {
         data[i] = s.numericalSamples().at(i);
@@ -90,7 +90,8 @@ Spectrum Analyzer::analyze2(const Sequence &s)const
  for(int i=0;i<n;i++)
      sam.push_back(data[i]);
  spectrum.setSamples(sam);
-
+ if(data!=NULL)
+     delete [] data;
   gsl_fft_real_workspace_free (work);
 return spectrum;
 }
