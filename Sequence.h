@@ -13,14 +13,16 @@ class Sequence
 ///data Sequence with optional Spectrum of that sequence
 {
 	TSamples samples;
-	///Sequence of numbers to analyze
 	Spectrum * spectrum;
-	///Empty or already calculated fft related to this sequence
 public:
 	Sequence();
+	///getter for spectrum
 	Spectrum * getSpectrum() const;
+	///setter for spectrum
 	void setSpectrum (const Spectrum * s);
+	///getter for samples
 	TSamples numericalSamples() const;
+	///setter for samples
 	void setSamples (TSamples & s);
 };
 

@@ -6,9 +6,11 @@
 #define EXCEPTIONS_H_
 
 class namedException : public std::exception
+///simple class which stores message about possible type/reason of exception
 {
 public:
 	std::string message;
+	///message constructor
 	namedException (std::string & text) {message = text;};
 };
 
