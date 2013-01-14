@@ -1,5 +1,6 @@
 #include "includes.h"
 #include "Parser.h"
+#include "Exceptions.h"
 
 #include <boost/spirit/include/qi.hpp>
 #include <boost/spirit/include/phoenix.hpp>
@@ -14,7 +15,7 @@ using qi::double_;
 using qi::uint_;
 //using qi::val_;
 using qi::lexeme;
-using qi::_1;
+//using qi::_1;
 using qi::phrase_parse;
 using qi::eps;
 using qi::omit;
@@ -23,7 +24,29 @@ using ascii::space;
 using ascii::char_;
 using ascii::space_type;
 //using ascii::str;
-using boost::phoenix::ref;
+//using boost::phoenix::ref;
+
+double convertACTG (char & c)
+{
+	switch (c)
+	{
+		case 'a':
+		case 'A':
+			return -1;
+		case 'c':
+		case 'C':
+			return 1;
+		case 't':
+		case 'T':
+			return 0.5;
+		case 'g':
+		case 'G':
+			return -0.3;
+		default:
+			throw parserException (std::string("unexpected DNA symbol ") + c);
+			return 0;
+	}
+}
 
 BOOST_FUSION_ADAPT_STRUCT(
 	FullExData,
@@ -129,13 +152,21 @@ void ParserFullEx::getSequences(std::vector<Sequence> & out) const
 	{
 		BOOST_FOREACH (auto intron, fullExData.introns)
 		{
-			TSamples samples (fullExData.data.begin() + intron.first, fullExData.data.begin() + intron.second); //copy range
+			//TSamples samples (fullExData.data.begin() + intron.first, fullExData.data.begin() + intron.second); //copy range
+			TSamples samples;
+			std::transform (fullExData.data.begin() + intron.first, fullExData.data.begin() + intron.second,
+				back_inserter(samples), boost::bind (&convertACTG, _1) );
+
 			seq.setSamples (samples);
 			out.push_back (seq);
 		}
 		BOOST_FOREACH (auto exon, fullExData.exons)
 		{
-			TSamples samples (fullExData.data.begin() + exon.first, fullExData.data.begin() + exon.second); //copy range
+			//TSamples samples (fullExData.data.begin() + exon.first, fullExData.data.begin() + exon.second); //copy range
+			TSamples samples;
+			std::transform (fullExData.data.begin() + exon.first, fullExData.data.begin() + exon.second,
+				back_inserter(samples), boost::bind (&convertACTG, _1) );
+
 			seq.setSamples (samples);
 			out.push_back (seq);
 		}
@@ -236,20 +267,27 @@ void ParserSplice::getSequences(std::vector<Sequence> & out) const
 				continue; //do not use sequences with data = 0
 			Sequence seq;
 			TSamples introns;
-			assert (data.sequence.size() >= chunk->position);
+			if (data.sequence.size() < chunk->position)
+				throw parserException (std::string("Intron / exon boundary can't be larger than sequence size!"));
 
-			for (int i = 0; i < chunk->position; ++i)
-			{
-				introns.push_back (data.sequence[i]);
-			}
+			//for (int i = 0; i < chunk->position; ++i)
+			//{
+			//	introns.push_back (data.sequence[i]);
+			//}
+			std::transform (data.sequence.begin(), data.sequence.begin() + chunk->position,
+				back_inserter(introns), boost::bind (&convertACTG, _1) );
+
 			seq.setSamples (introns);
 			out.push_back(seq);
 
 			TSamples exons;
-			for (int i = chunk->position; i < data.sequence.size(); ++i)
-			{
-				exons.push_back (data.sequence[i]);
-			}
+			//for (int i = chunk->position; i < data.sequence.size(); ++i)
+			//{
+			//	exons.push_back (data.sequence[i]);
+			//}
+			std::transform (data.sequence.begin() + chunk->position, data.sequence.end(),
+				back_inserter(exons), boost::bind (&convertACTG, _1) );
+
 			seq.setSamples (exons);
 			out.push_back(seq);
 		}

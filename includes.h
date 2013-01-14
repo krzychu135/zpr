@@ -12,6 +12,8 @@
 #include <string>
 #include <iostream>
 #include <cstdlib> //malloc
+#include <algorithm> //transform
+#include <boost\bind.hpp>
 // TODO: reference additional headers your program requires here
 
 #include "boost/foreach.hpp"
