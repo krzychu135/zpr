@@ -56,7 +56,7 @@ Spectrum Analyzer::analyze2(const Sequence &s)const
 		int i;
 		int n = s.numericalSamples().size();
 		double * data = new double[n];
-		for (int i = 0; i < s.numericalSamples().size(); ++i)
+        for (unsigned int i = 0; i < s.numericalSamples().size(); ++i)
 		{
 			data[i] = s.numericalSamples().at(i);
 		}
@@ -81,11 +81,11 @@ Spectrum Analyzer::analyze2(const Sequence &s)const
 		  std::cout<<data[i]<<" "<<std::endl;
 		}*/
 	
-		work = gsl_fft_real_workspace_alloc (n);
-		real = gsl_fft_real_wavetable_alloc (n);
+//		work = gsl_fft_real_workspace_alloc (n);
+//		real = gsl_fft_real_wavetable_alloc (n);
 	
-		gsl_fft_real_transform (data, 1, n, real, work);
-		gsl_fft_real_wavetable_free (real);
+//		gsl_fft_real_transform (data, 1, n, real, work);
+//		gsl_fft_real_wavetable_free (real);
 
 	  /*for (i = 11; i < n; i++)
 		{
@@ -101,7 +101,7 @@ Spectrum Analyzer::analyze2(const Sequence &s)const
 		Spectrum spectrum;
 		std::vector<double> sam;
 		for (int i = 0; i < n; ++i)
-			sam.push_back(data[i]);
+            sam.push_back(abs(data[i]));
 
 		spectrum.setSamples(sam);
 

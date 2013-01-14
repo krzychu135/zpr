@@ -5,7 +5,6 @@
 #include "includes.h"
 #include <QMainWindow>
 #include <QModelIndex>
-#include <QGraphicsScene>
 #include "Sequence.h"
 #include <QListWidgetItem>
 
@@ -43,8 +42,6 @@ private slots:
     void on_pushButton_clicked();
 
     void on_pushButton_3_clicked();
-
-    void on_pushButton_5_clicked();
 
     void on_pushButton_4_clicked();
     bool close() { exit(0); }

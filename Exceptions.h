@@ -9,25 +9,27 @@ class namedException : public std::exception
 {
 public:
 	std::string message;
-	namedException (std::string & text) {message = text;};
+    namedException (std::string  text) {message = text;};
+    ~namedException() throw() {};
+
 };
 
 class fileException : public namedException
 {
 public:
-	fileException (std::string & text) : namedException (text) {};
+    fileException (std::string  text) : namedException (text) {};
 };
 
 class parserException : public namedException
 {
 public:
-	parserException (std::string & text) : namedException (text) {};
+    parserException (std::string  text) : namedException (text) {};
 };
 
 class memoryException : public namedException
 {
 public:
-	memoryException (std::string & text) : namedException (text) {};
+    memoryException (std::string  text) : namedException (text) {};
 };
 
 //std::ostream & operator << (std::ostream & os, const namedException & e) 

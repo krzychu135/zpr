@@ -8,13 +8,17 @@
 
 #include "ChartViewer.h"
 
-ChartViewer::ChartViewer() {
+ChartViewer::ChartViewer(): parent(NULL) {
 	// TODO Auto-generated constructor stub
 
 }
 
 ChartViewer::~ChartViewer() {
 	// TODO Auto-generated destructor stub
+}
+void ChartViewer::Show(Spectrum * s,QWidget * parent)
+{
+    Show(s);
 }
 
 void ChartViewer::Show(Spectrum * s)
@@ -36,7 +40,7 @@ void ChartViewer::Show(Spectrum * s)
             min = x;
     }
 
-    customPlot = new QCustomPlot(NULL);
+    customPlot = new QCustomPlot(parent);
     customPlot->setObjectName(QString::fromUtf8("customPlot"));
     customPlot->setEnabled(true);
     QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Expanding);

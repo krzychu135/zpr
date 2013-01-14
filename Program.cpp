@@ -27,7 +27,7 @@ Program::Program(int argc, char *argv[]) {
 		}
     }
     //transform_file("../data/ATFullExOrIn.dat");
-    transform_file("../data/spliceATrainKIS");
+    transform_file("../data/spliceATrainKIS.dat");
     //TODO: making transformation in diffrent thread
     transform_sequence();
     std::cout<<"Sequences transformed"<<std::endl;
@@ -47,8 +47,9 @@ Program::Program(int argc, char *argv[]) {
     std::vector<double> samp;
     for(int i=0;i<128;i++)
     {
-        samp += sin((double)i) + cos((double)2*i);
+        samp += sin((double)i);
     }
+    //for_each(samp.begin(),samp.end(),std::cout<<_1<<" ");
     //samp.at(3) = 1;
     Sequence s;
     s.setSamples(samp);
@@ -100,9 +101,9 @@ void Program::transform_file(char * file)
 	else
 	{
 		std::cout << "File " << file << " not parsed\n";
-		throw parserException ("Parsowanie pliku " + fileName + "  nie powiod³o siê");
+        throw parserException ("Parsowanie pliku " + fileName + "  nie powiod³o siê");
 	}
-	
+
 }
 void Program::transform_sequence()
 {

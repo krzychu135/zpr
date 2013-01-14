@@ -72,13 +72,15 @@ void MainWindow::on_pushButton_3_clicked()
     }
 }
 
-void MainWindow::on_pushButton_5_clicked()
-{
-    std::cout<<"clicked4"<<std::endl;
-}
+//void MainWindow::on_pushButton_5_clicked()
+//{
+//    std::cout<<"clicked4"<<std::endl;
+//}
 
 void MainWindow::on_pushButton_4_clicked()
 {
+
+    Qt::CheckState state = ui->checkBox->checkState();
     std::cout<<"clicked"<<std::endl;
     try{
         if(ui->listWidget->selectedItems().isEmpty()) return; //do nothing when nothing is checked
@@ -86,10 +88,10 @@ void MainWindow::on_pushButton_4_clicked()
         Spectrum * s = seq.at(d);
         if(s!=NULL){
     ChartViewer nowy;
-    nowy.Show(s);
+    nowy.Show(s,this);
 //    std::cout<<"Podstawiam"<<std::endl;
-    ui->customPlot = nowy.getCustomPlot();
-    ui->customPlot->repaint();
+    //ui->customPlot = nowy.getCustomPlot();
+    //ui->customPlot->repaint();
     /*ui->horizontalLayout_3->removeWidget(ui->customPlot);
     ui->horizontalLayout_3->addWidget(nowy.getCustomPlot());
     //this->repaint();

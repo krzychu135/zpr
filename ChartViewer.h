@@ -17,11 +17,13 @@ class ChartViewer: public Viewer {
     void draw_chart(){}
 	//MainWindow chart;
     QCustomPlot * customPlot;
+    QWidget * parent;
 public:
-	ChartViewer();
+    ChartViewer();
     QCustomPlot * getCustomPlot()const { return customPlot; }
 	virtual ~ChartViewer();
     virtual void Show(Spectrum * s);
+    virtual void Show(Spectrum * s,QWidget * parent);
 };
 
 #endif /* CHARTVIEWER_H_ */
