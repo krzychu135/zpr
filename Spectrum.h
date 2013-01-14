@@ -12,7 +12,9 @@ class Spectrum
 	std::vector<double> samples;
 public:
 	Spectrum();
+	///getter
     std::vector<double> * getSamples();
+	///setter
     void setSamples(const std::vector<double>);
 };
 

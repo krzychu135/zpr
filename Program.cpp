@@ -50,6 +50,21 @@ Program::Program(int argc, char *argv[]) {
         samp += sin((double)i);
     }
     //for_each(samp.begin(),samp.end(),std::cout<<_1<<" ");
+
+	//sine superposition test
+    //for(int i=0;i<128;i++)
+    //{
+    //    samp += sin((double)i) + cos((double)2*i);
+    //}
+
+	//saw wave test
+	/*for (int waveform = 0; waveform < 5; ++waveform)
+	{
+		for (int i = -100; i < 101; ++i)
+		{
+			samp += (double) i * 0.01;
+		}
+	}*/
     //samp.at(3) = 1;
     Sequence s;
     s.setSamples(samp);
