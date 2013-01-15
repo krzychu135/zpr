@@ -17,12 +17,7 @@ FileViewer::~FileViewer() {
 	// TODO Auto-generated destructor stub
 }
 
-FileViewer::FileViewer(std::string name)
-{
-
-}
-
-void FileViewer::Show()
+FileViewer::FileViewer(const std::string na):name(na)
 {
 
 }

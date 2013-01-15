@@ -32,6 +32,17 @@ class memoryException : public namedException
 public:
     memoryException (std::string  text) : namedException (text) {};
 };
+class nullPointerException: public memoryException
+{
+public:
+    nullPointerException(std::string text): memoryException(text){};
+};
+
+class guiException : public namedException
+{
+public:
+    guiException (std::string text) : namedException(text) {}
+};
 
 //std::ostream & operator << (std::ostream & os, const namedException & e) 
 //{

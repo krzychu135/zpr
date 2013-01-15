@@ -4,13 +4,16 @@
  * Program.cpp
  *
  *  Created on: 31-12-2012
- *      Author: krzysiek
+ *      Author: Krzysztof Grzyb, Tomasz Zieliñski
  */
 
 #include "Program.h"
 #include "Exceptions.h"
-#include <math.h>
-
+/**
+ * @brief main program method everything goes there
+ * @param argc  number of files to perform
+ * @param argv  files to perform
+ */
 Program::Program(int argc, char *argv[]) {
 
     //processing data
@@ -27,8 +30,7 @@ Program::Program(int argc, char *argv[]) {
 		}
     }
     //transform_file("../data/ATFullExOrIn.dat");
-    transform_file("../data/spliceATrainKIS.dat");
-    //TODO: making transformation in diffrent thread
+    //transform_file("../data/spliceATrainKIS.dat");
     transform_sequence();
     std::cout<<"Sequences transformed"<<std::endl;
     //inicial gui application
@@ -43,51 +45,54 @@ Program::Program(int argc, char *argv[]) {
     window_->show();
 
 
-    //after transformation adding all sequences to gui
-    std::vector<double> samp;
+    /*std::vector<double> samp;
     for(int i=0;i<128;i++)
     {
         samp += sin((double)i);
     }
-    //for_each(samp.begin(),samp.end(),std::cout<<_1<<" ");
-
-	//sine superposition test
-    //for(int i=0;i<128;i++)
-    //{
-    //    samp += sin((double)i) + cos((double)2*i);
-    //}
+    sine superposition test
+    for(int i=0;i<128;i++)
+    {
+        samp += sin((double)i) + cos((double)2*i);
+    }
 
 	//saw wave test
-	/*for (int waveform = 0; waveform < 5; ++waveform)
+    for (int waveform = 0; waveform < 5; ++waveform)
 	{
 		for (int i = -100; i < 101; ++i)
 		{
 			samp += (double) i * 0.01;
 		}
-	}*/
-    //samp.at(3) = 1;
+    }
     Sequence s;
     s.setSamples(samp);
     Analyzer::get().createSpectrum(s);
-    window_->addSequence(s);
+    window_->addSequence(s);*/
+
     window_->addSequences();
-    //boost::thread process(&transform_sequence);
-    prog_->exec();
-
 }
-
+/**
+ * @brief releases resources
+ */
 Program::~Program() {
     if(prog_!=NULL)
         delete prog_;
     if(window_!=NULL)
         delete window_;
 }
-
+/**
+ * @brief starts qt gui loop
+ * @return result of gui processing
+ */
 int Program::start(){
 
-    return 0;
-}
+    return prog_->exec();
 
+}
+/**
+ * @brief parse file and getting sequences from added file for futher notice
+ * @param file  file name to parse
+ */
 void Program::transform_file(char * file)
 {
 	std::string fileName (file);
@@ -120,6 +125,9 @@ void Program::transform_file(char * file)
 	}
 
 }
+/**
+ * @brief makes fft for sequences parsed before
+ */
 void Program::transform_sequence()
 {
 
@@ -130,9 +138,7 @@ void Program::transform_sequence()
     {
         BOOST_FOREACH (Sequence & seq, *vec) //reference
         {
-            std::cout<<"Sequence processing"<<std::endl;
             Analyzer::get().createSpectrum (seq);
-            std::cout<<"zbadane"<<std::endl;
         }
     }
     std::cout << "Spectrum analysis complete\n";

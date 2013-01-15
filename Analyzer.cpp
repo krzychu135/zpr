@@ -66,9 +66,9 @@ Spectrum Analyzer::analyze2(const Sequence &s)const
 		gsl_fft_real_workspace * work;
 	
 		for (i = 0; i < n; i++)
-		{
-			std::cout << data[i] << " " << std::endl;
-		}
+//		{
+//			std::cout << data[i] << " " << std::endl;
+//		}
 
 		work = gsl_fft_real_workspace_alloc (n);
 		real = gsl_fft_real_wavetable_alloc (n);

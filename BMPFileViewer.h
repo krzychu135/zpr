@@ -15,9 +15,13 @@
 class BMPFileViewer: public FileViewer, ChartViewer{
 public:
 	BMPFileViewer();
+    BMPFileViewer(boost::shared_ptr<Spectrum> s, QWidget * par=0);
+    BMPFileViewer(const ChartViewer & chart);
 	virtual ~BMPFileViewer();
-    void Show(Spectrum *s);
-    bool Save(std::string name);
+    void show()const;
+    void show(const boost::shared_ptr<Spectrum> s);
+    void save(const std::string name)const;
+    void addSpectrum(const boost::shared_ptr<Spectrum> s);
 };
 
 #endif /* BMPFILEVIEWER_H_ */

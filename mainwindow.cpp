@@ -1,13 +1,19 @@
 #include "includes.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <boost/lexical_cast.hpp>
 #include "ParserFactory.h"
 #include "ChartViewer.h"
 #include "BMPFileViewer.h"
+#include "Exceptions.h"
+#include <QMessageBox>
+/**
+ * @brief creates program main window
+ * @param parent parent widget for this window
+ */
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
+    multiChart ==NULL;
 	ui = new Ui::MainWindow();
     ui->setupUi(this);
 }
@@ -15,25 +21,26 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    exit(0);
 }
-
-void MainWindow::addSequence(Sequence &s){
+/**
+ * @brief add sequence to list in main window
+ * @param s sequence to add
+ */
+void MainWindow::addSequence(const Sequence &s){
     try{
-    std::string seqsize = boost::lexical_cast<std::string>(s.getSpectrum()->getSamples()->size());
-    std::string item = boost::lexical_cast<std::string>(this->seq.size());
-    std::string label = item + " " + seqsize;
-    //if(this->seq.size()>10)return;
-    QListWidgetItem * qitem = new QListWidgetItem(label.c_str());
-    qitem->setData(Qt::UserRole,this->seq.size());
-    this->seq.push_back(s.getSpectrum());
-    ui->listWidget->addItem(qitem);
-    }catch(std::exception e){
-        //do nothing
-    }
-}
-void MainWindow::on_listWidget_clicked(const QModelIndex &index)
-{
+        std::string seqsize = boost::lexical_cast<std::string>(s.getSpectrum()->getSamples()->size());
+        std::string item = boost::lexical_cast<std::string>(this->seq.size());
+        std::string label = item + " " + seqsize;
 
+        QListWidgetItem  * qitem = new QListWidgetItem(label.c_str());
+        qitem->setData(Qt::UserRole,this->seq.size());  //identifier of sequence
+        this->seq.push_back(boost::shared_ptr<Spectrum>(s.getSpectrum()));
+        ui->listWidget->addItem(qitem);
+
+    }catch(std::exception e){
+        std::cout<<"Internal error when adding sequence in: "<<e.what()<<std::endl;
+    }
 }
 
 void MainWindow::addSequences()
@@ -47,66 +54,105 @@ void MainWindow::addSequences()
         }
     }
 }
-
-void MainWindow::on_pushButton_2_clicked()
+/**
+ * @brief saves all created spectrums to bmpfile
+ */
+void MainWindow::on_pushButton_2_clicked() //save all charts
 {
-    for(int i=0;i<ui->listWidget->count();i++){
-
+   try{
+        for(int i=0;i<ui->listWidget->count();i++){
+            int d = ui->listWidget->item(i)->data(Qt::UserRole).toInt();
+            boost::shared_ptr<Spectrum> s = this->seq.at(d);
+            BMPFileViewer bmp;
+            bmp.addSpectrum(s);
+            bmp.save("spectrum"+boost::lexical_cast<std::string>(i)+".bmp");
+        }
+        QMessageBox mes(QMessageBox::Information,QString("information"),QString("All charts saved"));
+        mes.exec();
+    }catch(fileException & e){
+        std::cout<<"File exception: "<<e.message<<std::endl;
+    }catch(std::exception & e){
+        std::cout<<"Exception: "<<e.what()<<std::endl;
     }
 }
-
+/**
+ * @brief closing window and finishing program
+ */
 void MainWindow::on_pushButton_clicked()
 {
-    exit(0);
+    this->close();
 }
-
-void MainWindow::on_pushButton_3_clicked()
+/**
+ * @brief saves spectrum chart as bmp image
+ */
+void MainWindow::on_pushButton_3_clicked()  //saveChart
 {
-//    std::cout<<"clicked3"<<std::endl;
-    if(ui->listWidget->selectedItems().isEmpty()) return; //do nothing when nothing is checked
-    auto d = ui->listWidget->selectedItems().first()->data(Qt::UserRole).toInt();
-    Spectrum * s = seq.at(d);
-    if(s!=NULL){
-        BMPFileViewer nowy;
-        nowy.Show(s);
+    try{
+
+        if(ui->checkBox->checkState() == Qt::Checked){
+            if(this->multiChart != NULL){
+                BMPFileViewer ala(*this->multiChart);
+                ala.save("spectrum.bmp");
+            }
+        }else{
+            shs s = extractSelectedSpectrum();
+            BMPFileViewer nowy;
+            nowy.addSpectrum(s);
+            nowy.save("spectrum.bmp");
+        }
+        QMessageBox mes(QMessageBox::Information,QString("information"),QString("Chart saved"));
+        mes.exec();
+    }catch(guiException & e){
+        QMessageBox mes(QMessageBox::Warning,QString("information"),QString(e.message.c_str()));
+        mes.exec();
+    }catch(fileException & e){
+        QMessageBox mes(QMessageBox::Warning,QString("information"),QString(e.message.c_str()));
+        mes.exec();
+    }catch(std::exception & e){
+        std::cout<<"Exception: "<<e.what()<<std::endl;
     }
 }
-
-//void MainWindow::on_pushButton_5_clicked()
-//{
-//    std::cout<<"clicked4"<<std::endl;
-//}
-
-void MainWindow::on_pushButton_4_clicked()
+/**
+ * @brief
+ * @return spectrum associated with selected item in list
+ */
+shs MainWindow::extractSelectedSpectrum()
 {
+    if(ui->listWidget->selectedItems().isEmpty())
+        throw guiException("You must select item from list first");
 
-    Qt::CheckState state = ui->checkBox->checkState();
-    std::cout<<"clicked"<<std::endl;
+    auto d = ui->listWidget->selectedItems().first()->data(Qt::UserRole).toInt();
+return seq.at(d);
+}
+/**
+ * @brief Showing selected sequence as chart in separated window
+ */
+void MainWindow::on_pushButton_4_clicked()  //show chart
+{
     try{
-        if(ui->listWidget->selectedItems().isEmpty()) return; //do nothing when nothing is checked
-        auto d = ui->listWidget->selectedItems().first()->data(Qt::UserRole).toInt();
-        Spectrum * s = seq.at(d);
-        if(s!=NULL){
-    ChartViewer nowy;
-    nowy.Show(s,this);
-//    std::cout<<"Podstawiam"<<std::endl;
-    //ui->customPlot = nowy.getCustomPlot();
-    //ui->customPlot->repaint();
-    /*ui->horizontalLayout_3->removeWidget(ui->customPlot);
-    ui->horizontalLayout_3->addWidget(nowy.getCustomPlot());
-    //this->repaint();
-    ui->customPlot->hide();*/
-//    std::cout<<"Podstawiłem"<<std::endl;
-
-
-
-    //Sequence *selected = this->sequences[row];
-    //rysuj wykres
-    //ui->graphicsView->setScene(drawChart(NULL));
-    //std::cout<<"szerokość: "<<ui->graphicsView->width()<<" wysokość"<<ui->graphicsView->height()<<std::endl;
-    //ui->graphicsView->show();
+        shs s = extractSelectedSpectrum();
+        //if many charts at one wanted
+        if((ui->checkBox->checkState()) == Qt::Checked){
+            if(this->multiChart==NULL){
+                this->multiChart = new ChartViewer();
+            }
+            this->multiChart->addSpectrum(s);
+            multiChart->show();
         }
-    }catch(std::out_of_range out){
+        else{
+            ChartViewer nowy = ChartViewer();
+            nowy.addSpectrum(s);
+            nowy.show();
+        }
 
+
+    }catch(guiException & e){
+        QMessageBox mes(QMessageBox::Warning,QString("information"),QString(e.message.c_str()));
+        mes.exec();
+    }catch(nullPointerException e){
+        std::cout<<"Exception "<<e.what()<<": "<<e.message<<std::endl;
+
+    }catch(std::out_of_range out){
+        std::cout<<"Exception "<<out.what()<<std::endl;
     }
 }

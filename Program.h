@@ -21,7 +21,7 @@
 #include "mainwindow.h"
 
 /**
- * Main class providing basic functionality and launching others functions.
+ * Main class providing functionality and managing program. Processes date. Initialize gui interface.
  */
 class Program {
 	void create_main_window();

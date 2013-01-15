@@ -10,16 +10,21 @@
 #define VIEWER_H_
 
 #include "Sequence.h"
-
+/**
+ * @brief Basic class for all wanted to show spectrum
+ */
 class Viewer {
-private:
-    Spectrum * spectrum_;
+protected:
+    boost::shared_ptr<Spectrum> spectrum;
 public:
 	virtual ~Viewer();
-	Viewer();
-    Viewer(Spectrum* s){ spectrum_ = s; }
-
-    virtual void Show(Spectrum *)=0;
+    Viewer();
+    Viewer(const boost::shared_ptr<Spectrum> s):spectrum(s) {}
+    virtual void addSpectrum(const boost::shared_ptr<Spectrum> s)=0;
+    /**
+     * @brief Shows contest of kept spectrum
+     */
+    virtual void show()const =0;
 };
 
 #endif /* VIEWER_H_ */

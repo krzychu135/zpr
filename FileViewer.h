@@ -11,17 +11,17 @@
 
 #include "Viewer.h"
 
-class FileViewer: public Viewer {
+class FileViewer {
 	/**
 	 * Where to save file with spectrum
 	 */
-	std::string name_;
+    std::string name;
 public:
 	FileViewer();
 	virtual ~FileViewer();
-	FileViewer(std::string name);
+    FileViewer(const std::string na);
 
-	virtual void Show();
+    virtual void save(const std::string na)const=0;
 };
 
 #endif /* FILEVIEWER_H_ */

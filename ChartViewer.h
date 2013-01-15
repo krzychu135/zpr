@@ -11,19 +11,30 @@
 
 #include "Viewer.h"
 #include "qcustomplot.h"
+class BMPFileViewer;
 
 class ChartViewer: public Viewer {
-    void create_window(){}
-    void draw_chart(){}
-	//MainWindow chart;
+protected:
+    ///handler to  chart;
     QCustomPlot * customPlot;
     QWidget * parent;
+    int width_max,height_max,height_min;
 public:
     ChartViewer();
-    QCustomPlot * getCustomPlot()const { return customPlot; }
+    /**
+     * @brief ChartViewer
+     * @param spectrum for which chart will be made
+     * @param partent parent widget for this widget
+     */
+    ChartViewer(const boost::shared_ptr<Spectrum> spectrum,QWidget * partent = NULL);
+
+    virtual QCustomPlot * getCustomPlot()const { return customPlot; }
+    virtual void addSpectrum(const boost::shared_ptr<Spectrum> s);
 	virtual ~ChartViewer();
-    virtual void Show(Spectrum * s);
-    virtual void Show(Spectrum * s,QWidget * parent);
+    virtual void show()const;
+    virtual void show(const boost::shared_ptr<Spectrum> s);
+
+    friend class BMPFileViewer;
 };
 
 #endif /* CHARTVIEWER_H_ */
