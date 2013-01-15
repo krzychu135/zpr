@@ -9,12 +9,10 @@
 #include "BMPFileViewer.h"
 #include <QMessageBox>
 BMPFileViewer::BMPFileViewer() {
-	// TODO Auto-generated constructor stub
 
 }
 
 BMPFileViewer::~BMPFileViewer() {
-	// TODO Auto-generated destructor stub
 }
 BMPFileViewer::BMPFileViewer(const ChartViewer & chart)
 {
@@ -39,7 +37,6 @@ BMPFileViewer::BMPFileViewer(const boost::shared_ptr<Spectrum> s, QWidget * par)
 {
     this->parent = par;
     this->spectrum = s;
-    //addSpectrum(s);
 }
 void BMPFileViewer::addSpectrum(const boost::shared_ptr<Spectrum> s)
 {

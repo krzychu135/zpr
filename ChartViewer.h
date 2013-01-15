@@ -12,7 +12,9 @@
 #include "Viewer.h"
 #include "qcustomplot.h"
 class BMPFileViewer;
-
+/**
+  * @brief Provides visualization fft on chart.
+*/
 class ChartViewer: public Viewer {
 protected:
     ///handler to  chart;
@@ -29,9 +31,18 @@ public:
     ChartViewer(const boost::shared_ptr<Spectrum> spectrum,QWidget * partent = NULL);
 
     virtual QCustomPlot * getCustomPlot()const { return customPlot; }
+    /**
+      * @brief creating chart if doesn't exist else adding new graph onto existing once
+      */
     virtual void addSpectrum(const boost::shared_ptr<Spectrum> s);
 	virtual ~ChartViewer();
+    /**
+      * @brief makes chart visible
+      */
     virtual void show()const;
+    /**
+      * @brief firstly making chart then showing it on screem
+    */
     virtual void show(const boost::shared_ptr<Spectrum> s);
 
     friend class BMPFileViewer;

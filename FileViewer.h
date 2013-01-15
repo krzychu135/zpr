@@ -10,7 +10,9 @@
 #define FILEVIEWER_H_
 
 #include "Viewer.h"
-
+/**
+  * Base class for all Viewers wanted to operate on files
+*/
 class FileViewer {
 	/**
 	 * Where to save file with spectrum

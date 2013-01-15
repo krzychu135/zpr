@@ -1,0 +1,126 @@
+\documentclass[a4size,final]{article}
+\usepackage{fullpage}
+\usepackage{polski}
+\usepackage[cp1250]{inputenc}
+\usepackage[pdftex]{graphicx}
+
+%\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+%\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{hyperref}
+\hypersetup{ 
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=ForestGreen,
+    urlcolor=blue
+}
+\begin{document}
+\normalsize
+\pagestyle{plain}
+\setcounter{secnumdepth}{1}
+\title{\Huge{Projekt ZPR}\\ \Large{Analiza widmowa sekwencji DNA}}
+\author{Krzysztof Grzyb & Tomasz Zieliñski}
+\maketitle
+
+
+\section{Opis projektu}
+\subsection*{Temat}
+Obliczanie i wizualizacja widma transformaty Fouriera dla nietypowych danych np. sekwencji DNA. Sekwencjê DNA mo¿emy traktowaæ jak napis, a ten z kolei, po zamianie na liczby, jako ci¹g próbek na podstawie których mo¿na policzyæ transformatê.
+\subsection{Wymagania funkcjonalne}
+Program jest uruchamiany z linii poleceñ. Jako argument podawana jest nazwa pliku zawieraj¹cego sekwencje DNA. Dla ka¿dej z sekwencji DNA wykonywana jest transformata Fouriera. Wyniki s¹ wyœwietlane na wykresie.
+\subsubsection{Format danych wejœciowych}
+Pliki z danymi s¹ zapisywane w ró¿nych formatach z rozszerzeniem .dat. Parser sam rozpoznaje format pliku.
+\begin{itemize}
+\item \textbf{Typ 1}\\
+Plik typu tekstowego. Pierwszy wiersz zawiera jedn¹ liczbê dodatni¹ - okreœla ona pozycjê, na której nastêpuje rozdzia³ miêdzy egzonem a intronem. Nastêpne wiersze wystêpuj¹ w parach. Pierwszy mówi czy sekwencja DNA jest poprawna (1 poprawna, 0 niepoprawna), a drugi zawiera sekwencjê DNA.\\
+Przyk³adowy plik z dwiema sekwencjami:\\ \\
+\texttt{7\\1\\CTCCGAAGTAGGATT\\1\\TCAGAAGGTGAGGGC}
+\item \textbf{Typ 2}\\
+Plik typu tekstowego. Mo¿e sk³adaæ siê z wielu sekwencji DNA. Sk³adnia sekwencji jest nastêpuj¹ca:\\
+Najpierw wystêpuje etykieta, a w nastêpnej lini dane. Ka¿da sekwencja musi posiadaæ 4 etykiety ,tóre bêd¹ sprawdzane:
+\begin{itemize}
+\item{Len} - d³ugoœæ sekwencji DNA
+\item{Introns} - w tych zakresach sekwencji DNA znajduj¹ siê introny
+\item{Exons} - w tych zakresachsekwencji DNA znajduj¹ siê Introny
+\item{Data} - sekwencja DNA
+\end{itemize}
+Przyk³adowy plik:\\
+\texttt{\(>\)Seq 0 Len:\\250\\5UTR\\\\Intergenic\\\\Introns\\ 10 55 100 130 150 170\\Exons\\ 56 99 180 200\\3UTR\\\\Data\\AAGCTTATTATCTCTCCTTGACTCTCATCCGAGCTATCTTCTTCCACAT\\
+CTCTCTCGTTCCTCGGCGCGAACCTCTCGCTTCTTCTCCTCTTACTCCGATTGAACGATTCCGGATCT\\
+}
+\item \textbf{Inne formaty}\\
+Dodatkowo struktura programu umo¿liwia dodanie nowych obs³ugiwanych formatów bez ingerencji w achitekturê.
+\end{itemize}
+
+\subsubsection{Interfejs programu i format danych wyjœciowych}
+W przypadku nierozpoznanego formatu wejœcia zwracany jest komunikat o b³êdzie, a program przechodzi do przetwarzania kolejnego pliku wejœciowego.\\
+Po sparsowaniu danych program przechodzi do wyliczania fft dla poprawnie sparsowanych sekwencji. Nastêpnie wyœwietlane jest okno g³ówne programu i ³adowana lista sekwencji widm mo¿liwych do obejrzenia (wyœwietlanie: [numer sekwencji] [d³ugoœæ sekwencji]).\\
+Program oferuje:
+\begin{itemize}
+\item Po zaznaczeniu sekwencji i naciœniêciu przycisku Chart program wyœwietla w nowym oknie wykres widma danej sekwencji.
+\item Po zaznaczeniu sekwencji i naciœniêciu przycisku Save program zapisuje wykres wybranej sekwencji do pliku spectrum.bmp w katalogu z programem (Uwaga: w razie istnienia pliku nadpisuje go)
+\item Po naciœnieciu Save All wszystkie sekwencje s¹ zapisywane do plików bmp
+\item Istnieje mo¿liwoœæ wyœwietlania/zapisywania wielu sekwencji na jednym wykresie po zaznaczeniu checkbox'a.
+
+\end{itemize}
+Po wykonaniu tranformaty Fouriera wyœwietlana jest lista widm poszczególnych sekwencji. U¿ytkownik mo¿e wybraæ dowoln¹ z sekwencji i wyœwietliæ jej widmo. Podawane s¹ podstawowe dane, takie jak liczba i d³ugoœæ sekwencji.
+\section{Rozwi¹zania programowe}
+\subsection{Struktura programu}
+Program  sk³ada siê z trzech g³ównych modu³ów:
+\begin{itemize}
+\item Przetwarzanie plików wejœciowych (Klasa Parser)
+Modu³ wczytuje dane z pliku, nastêpnie rozpoznaje, jakiego typu dane zosta³y wczytane i przetwarza je do formatu u¿ywanego w programie, na którym mo¿liwe jest zastosowanie FFT.\\
+
+Nadrzêdn¹ klas¹ odpowiedzialn¹ za parsowanie plików jest ParserFactory. Jest ona zaimplementowana jako Singleton i przechowuje kolekcjê obiektów typu Parser. Poszcególne parsery dziedzicz¹ po klasie abstrakcyjnej Parser i dokonuja rzeczywistego przekszta³cenia wejœciowego ci¹gu znaków na wyjœciowe próbki – wartoœci liczbowe typu double.\\
+
+W pierotnym zamierzeniu klasa Parserfactory mia³a tworzyæ odpowiedni parser dla ka¿dego pliku wejœciowego. Jednak wydedukowanie formatu pliku a priori  jest trudne, zw³aszcza dla formatów testowych – oba korzystaj¹ z rozszerzenia .dat. Odczytanie informajci o pliku w takim wypadku jest równoznaczne z przeprowadzeniem przynajmniej czêœciowego parsowania, zatem przyjêto inne rozwi¹zanie – ka¿dy z parserów po kolei próbuje wczytaæ dany plik. Pozwala to równie¿ na dodanie kolejnych parserów w przysz³oœci bez zmiany istniej¹cego kodu.\\
+Gdy któremukolwiek z parserów uda siê przeprowadzic wczytywanie do koñca, oznacza to sukces, natomiast gdy ¿adnemu z parserów to siê nie uda – pora¿kê. Odpowiedni komunikat jest drukowany na standardowe wyjœcie.\\
+
+W³aœciwe parsery – ParserSplice i ParserFullEx – wykorzystuj¹ bibliotekê Boost:::Spirit, w szczególnoœci jej fragment Qi przeznaczony w³aœnie do tworzenia modularnych parserów. Ka¿dy z parserów dziedziczy po klasie Qi::grammar i mo¿e s³u¿yæ do budowy wiêkszych parserów za pomoc¹ przeci¹¿onego operatora <<. Dziêki temu na przyk³ad mzliwe jest wczytanie liczby typu unsigned, nastêpnie pary tych liczb, ci¹gu par i w koñcu ca³ego formatu FullExOr.\\
+Wczytywane dane s¹ umieszczane bezpoœrednio w strukturach lub te¿ w wektorach struktur. Struktury danych tworz¹ hierarchiê odpowiadaj¹c¹ hierarchii parserów. Wczytywanie danych bezpoœrednio do struktur o doœæ dowolnym typie (np. FullexData zdefiniownaym przez u¿ytkownika) jest mo¿liwe dziêki makro BOOST_FUSION_ADAPT_STRUCT, które ³¹czy pole struktury z jej typem. Parser dla odpowiedniej struktury umieszcza kolejno wczytane fragmenty w odpowiadaj¹cych im polach.\\
+
+U¿yte parsery s¹ restrykcyjne pod wzglêdem sk³adni, to znaczy wymagaj¹ istnienia tak¿e pól, które nie s¹ wczytywane do struktur – informacji pomocniczych nie bêd¹cych przedmiotem zainteresowania, które mo¿naby pomin¹æ. Zaliczaj¹ siê do nich tak¿e m.in. znaki nowej linii obecne w pliku.
+Dodanie zbyt wielu opcjonalnych wyrazów do parsera praktycznie uniemo¿liwia³o jego debugowanie, zanim zacz¹³ dzia³aæ. Dla pewnoœci wiêc parsowany jest pe³ny format pliku.\\
+
+Konwersja pomiêdzy próbkami DNA (actg) i typem rzeczywistym (double) odbywa siê dziêki funkcji convertACTG. Zosta³ tu wykorzystany algorytm std::transform i boost::bind. Para AC odpowiada przeciwnym wartoœciom, natomiast para TG wnosi pewn¹ wartoœæ sta³¹, dziêki czemu opdpowiadaj¹ce im widmo jest ró¿ne.\\
+
+
+\item Obliczanie transformaty Fouriera (Klasa Analyzer)\\
+Obliczaniem fft zajmuje siê prosta klasa Analyzer, która ko¿ysta z biblioteki gsl, a dok³adniej gsl_ftt aby dla wejœciowego wektora próbek x[n] wyliczyæ fft i zwróciæ |X[k]|.
+\item Wizualizacja wyników (Klasa Viewer)\\
+Klasa Viewer jest abstrakcyjn¹ klas¹ dostarczaj¹c¹ interfejs dla klas, które chcia³yby wizualizowaæ widma fft. Dziedziczy po niej klasa ChartViewer, wyœwietlaj¹ca widmo w postaci wykresu, po której dziedziczy klasa BMPFileViewer rozszerzaj¹ca mo¿liwoœci swojej klasy bazowej o zapis wykresu do pliku.\\
+Taki schemat umo¿liwia ³atwe rozszerzanie funkcjonalnoœci przez dodanie nowych klas. Bêd¹ one musia³y jedynie implementowaæ interfejs Viewer i je¿eli bêd¹ chcia³y korzystaæ z mo¿liwoœci zapisu do pliku interfejs FileViewer.\\
+\item Hierarchia wyj¹tków\\
+W programie zosta³a zaimplementowana hierarchia wyj¹tków pozwalaj¹ca reagowaæ na nietypowe zdarzenia.
+\begin{figure}
+%\begin{center} zamiast \begin{center} u¿yj lepiej
+\centering % bo \centering nie wstawia dodatkowego odstêpu
+\includegraphics[width=0.9\textwidth]{classnamed_exception}
+\end{figure}
+
+
+\end{itemize}
+
+\subsection{Styl kodowania}
+\href{http://wiki.vcmi.eu/index.php?title=Coding_guidelines}{Zgodny z tymi wytycznymi}
+\subsection{Wykorzystane biblioteki}
+\begin{itemize}
+\item GSL (FFT)
+\item QT (interfejs graficzny)
+\item Boost (FOREACH, lexical\_cast, inne)
+\item QCustomPlot (Widget do Qt wyœwietlaj¹cy wykres transformaty)
+\end{itemize}
+\subsection{Przenoœnoœæ kodu}
+Kod by³ pisany w sposób niezale¿ny od platformy. Testy zost³y przeprowadzone na dwóch systemach: Linux i Windows. Do kodu Ÿród³owego do³¹czony jest plik makefile (wraz z plikami, które do³¹cza) pozwalaj¹cy na kompilacjê na systemach Linux i Windows.
+
+\section{Utrzymanie i rozszerzalnoœæ projektu}
+\subsection{Mo¿liwoœæ rozszerzania funkcjonalnoœci}
+Kod programu bêdzie mo¿na ³atwo rozszerzaæ o nowe funkcjonalnoœci:
+\begin{itemize}
+\item Obs³ugiwanie dodatkowych formatów wejœciowych
+\item Inny sposób wizualizacji wyników
+\end{itemize}
+
+\end{document}

@@ -18,8 +18,8 @@ protected:
     boost::shared_ptr<Spectrum> spectrum;
 public:
 	virtual ~Viewer();
-    Viewer();
-    Viewer(const boost::shared_ptr<Spectrum> s):spectrum(s) {}
+     Viewer();
+     Viewer(const boost::shared_ptr<Spectrum> s):spectrum(s) {}
     virtual void addSpectrum(const boost::shared_ptr<Spectrum> s)=0;
     /**
      * @brief Shows contest of kept spectrum

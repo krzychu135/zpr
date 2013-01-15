@@ -23,7 +23,7 @@
  * Main class providing functionality and managing program. Processes date. Initialize gui interface.
  */
 class Program {
-	void create_main_window();
+	//void create_main_window();
     void transform_file(char * file);
 	void transform_sequence();
 public:
