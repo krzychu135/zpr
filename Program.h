@@ -15,7 +15,6 @@
 #include <boost/thread/thread.hpp>
 #include <boost/ref.hpp>
 
-#include "Graph.h"
 #include "Analyzer.h"
 #include "ParserFactory.h"
 #include "mainwindow.h"
