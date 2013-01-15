@@ -24,6 +24,8 @@
 
 /*! \file */
 
+#include "includes.h"
+
 #ifndef QCUSTOMPLOT_H
 #define QCUSTOMPLOT_H
 
